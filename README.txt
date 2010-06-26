@@ -16,6 +16,11 @@ For the quick start guide, please see:
     http://restx.mulesoft.org/quick-start-guide
 
 
+Please see 'INSTALL.txt' for installation instructions.
+
+Please see 'LICENSE.txt' for the GPLv3 license text.
+
+
 
 Files
 =====
