@@ -432,7 +432,7 @@ fi
 echo -e "\n\nInstall completed successfully."
 echo -e "\nThe '$CTL_SCRIPT' script was created in this directory. Please use"
 echo -e "it to start, stop and restart the RESTx server:\n"
-echo "   % $CTL_SCRIPT start            # Start the restx server"
+echo "   % $CTL_SCRIPT start            # Start the RESTx server"
 echo "   % $CTL_SCRIPT stop             # Stop a running RESTx server"
 echo "   % $CTL_SCRIPT restart          # Stops and restarts a RESTx server"
 echo "   % $CTL_SCRIPT component ...    # Allows you to create and work with components"
