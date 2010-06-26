@@ -1,0 +1,14 @@
+
+
+#
+# Script used to create the JAR files and remove class
+# files from the source directories
+#
+
+bin/restxcompile all
+cd $RESTX_HOME/src/java
+jar cvf json.jar `find org/json -name '*.class'`
+jar cvf restx.jar `find org/mulesource -name '*.class'`
+mv *.jar $RESTX_HOME/lib
+rm -f `find . -name '*.class'`
+

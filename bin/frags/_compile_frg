@@ -1,0 +1,109 @@
+
+
+#
+# Body of the restxcompile script
+#
+
+if [ -z "$JAVAC_EXECUTABLE" ]; then
+    echo -e "\n**** No 'javac' executable (Java compiler) was found."
+    echo -e "**** Cannot compile Java code..."
+    echo -e "**** To compile Java code, please install a Java 6 SDK"
+    echo -e "**** and re-run the install script...\n"
+    exit 1
+fi
+
+
+COMPILE_OPTIONS=-nowarn
+
+#
+# Prints help text
+#
+function restxcompile_help
+{
+    echo -e "
+Welcome to RESTx. (c) 2010 MuleSoft.
+Version: $VERSION
+"
+    end_in_error=0
+    if [ -n "$1" ]; then
+        echo -e "Error: Illegal option: $1\n"
+        end_in_error=1
+    else
+        echo -e "This is the '$COMPILE_SCRIPT_NAME' script, with which you can compile the
+Java sources (or Java components) of a RESTx server.
+"
+    fi
+    echo -e "Usage: $COMPILE_SCRIPT_NAME [all|components]\n"
+    return $end_in_error
+}
+
+#
+# Compiles all Java sources under a given
+# path ($1), except the path that's specified
+# in $2.
+#
+function restxcompile_source
+{
+    if [ -z $1 ]; then
+        comp_path="."
+    else
+        comp_path="$1"
+    fi
+    cd $RESTX_HOME/src/java
+    if [ -z $2 ]; then
+        # No exclusions
+        javac $COMPILE_OPTIONS `find $1 -name '*.java'`
+        return $?
+    else
+        # Some path was excluded
+        javac $COMPILE_OPTIONS `find $1 \( -path $2 \) -prune -o -name '*.java'`
+        return $?
+    fi
+}
+
+#
+# Compiling the entire system
+#
+function compile_all
+{
+    echo -e "\nPreparing to compile RESTx Java sources (including all Java components)."
+    echo "Please wait..."
+    restxcompile_source org/mulesource/restx/
+    if [ $? == 0 ]; then
+        echo -e "Compilation was successful.\n"
+        exit 0
+    else
+        echo -e "Error: Compilation failed. Abort.\n"
+        exit 1
+    fi
+}
+
+
+#
+# Compiling only the components
+#
+function compile_components
+{
+    echo -e "\nPreparing to compile RESTx Java components only."
+    echo "Please wait..."
+    restxcompile_source org/mulesource/restx/ org/mulesource/restx/component/api/
+    if [ $? == 0 ]; then
+        echo "Compilation was successful."
+        return 0
+    else
+        echo "Error: Compilation failed. Abort."
+        exit 1
+    fi
+}
+
+
+
+case $1 in
+    all)         compile_all;;
+    components)  compile_components;;
+    help)        restxcompile_help;;
+    *)           restxcompile_help $1;;
+esac
+
+
+

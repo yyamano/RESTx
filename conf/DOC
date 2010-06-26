@@ -1,0 +1,20 @@
+<h2>Welcome to RESTx!</h2>
+<p>The fastest and easiest way to create RESTful resources
+in your enterprise or in the cloud.</p>
+<ul>
+ <li>As a user: Use the RESTful server API to encapsulate and share
+     your knowledge by creating useful data resources, easy to handle
+     and share with colleagues, customers or anyone else.</li>
+ <li>As a developer: Transform your custom code into reusable entities
+     by integrating them into the RESTx server, using the easy component
+     API, which gives you a choice of several implementation languages.
+</ul>
+<p>Find out more about the RESTx project, view detailed documentation
+and examples, tutorials, howtos and connect to the RESTx developer and
+user community at the official project web-site: <a target="_blank" href="http://restx.mulesoft.org">http://restx.mulesoft.org</a></p>
+<hr>
+<p>RESTx  Copyright (C) 2010  MuleSoft Inc.</p>
+<p>This program comes with ABSOLUTELY NO WARRANTY; for details view
+the LICENSE.txt file or view the <a target="_blank" href="http://www.gnu.org/licenses/gpl-3.0.txt">text of the GPLv3 license</a>.</p>
+<p>This is free software, and you are welcome to redistribute it
+under certain conditions.</p>

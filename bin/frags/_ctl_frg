@@ -1,0 +1,163 @@
+
+
+#
+# Body of the restxctl script
+#
+# This script is used to start, stop or restart a RESTx server.
+# You can also use it to compile components and to create new
+# component templates for the various languages.
+#
+
+COMPONENT_LIST="src/python/restx_components_list/__init__.py"
+LANGUAGES=
+
+function restx_help
+{
+    echo -e "
+Welcome to RESTx. (c) 2010 MuleSoft.
+Version: $VERSION
+"
+    if [ -n "$1" ]; then
+        echo -e "Error: Illegal option: $1\n"
+    else
+        echo -e "This is the '$CTL_SCRIPT_NAME' script, with which you can start, stop
+or restart a RESTx server. You can also 
+"
+    fi
+    echo -e   "Usage: $CTL_SCRIPT_NAME [start|restart] [-b] [-l <logfile>]"
+    echo      "             To start or restart the RESTx server process."
+    echo      "             Use -b option to start in background."
+    echo      "             Use -l <logfile> to direct output to specified logfile instead of the console."
+    echo -e "\n   or: $CTL_SCRIPT_NAME stop"
+    echo      "             To stop a currently running server process."
+    echo -e "\n   or: $CTL_SCRIPT_NAME component compile"
+    echo      "             To compile Java components. Only needed when Java components are added or modified."
+    echo -e "\n   or: $CTL_SCRIPT_NAME component create <name> <language>"
+    echo      "             To create a new component template."
+    echo -e "\n   or: $CTL_SCRIPT_NAME help"
+    echo      "             To show this help information."
+    echo
+}
+
+function start_restx
+{
+    in_background=""
+    # Default logfile (if running in foreground): None, output to console
+    logfile=
+    shift
+    while (( "$#" )); do
+        if [ $1 == "-b" ]; then
+            in_background="--background"
+            if [ -z $logfile ]; then
+                # If logfile has not been set already then we set a default logfile location
+                logfile="--logfile "$RESTX_HOME/restx.log
+            fi
+        elif [ $1 == "-l" ]; then
+            logfile="--logfile "$2
+            shift
+        else
+            restx_help "start parameter '$1'"
+            exit 1
+        fi
+        shift
+    done
+
+    cd $RESTX_HOME/src/python
+    $START_STOP_DAEMON --start $in_background --pidfile $PID_FILE --startas $JYTHON_EXECUTABLE -- $RESTX_HOME/src/python/starter.py --pidfile $PID_FILE $logfile --rootdir $RESTX_HOME
+    if [ $? == 0 ]; then
+        sleep 4
+    else
+        exit $?
+    fi
+}
+
+function stop_restx
+{
+    $START_STOP_DAEMON --stop --pidfile $PID_FILE &> /dev/null
+    if [ $? == 0 ]; then
+        echo "Server stopped."
+        return 0
+    else
+        echo "Could not stop server, or no server was running."
+        return 1
+    fi
+}
+
+function restart_restx
+{
+    echo "Stopping RESTx server. Please wait."
+    stop_restx
+    if [ $? == 0 ]; then
+        sleep 2
+    fi
+    echo "Starting RESTx server. Please wait."
+    start_restx $@
+    if [ $? == 0 ]; then
+        echo "Restart successful."
+        exit 0
+    else
+        exit 1
+    fi
+}
+
+function compile_components
+{
+    echo "Compiling RESTx Java components. Please wait..."
+    $COMPILE_SCRIPT components
+    exit $?
+}
+
+function print_known_languages
+{
+    curdir=`pwd`
+    cd $RESTX_HOME/languages
+    find * -maxdepth 0 -type d
+    cd $curdir
+}
+
+function create_component
+{
+    name="$1"
+    language="$2"
+
+    # Check that we have all the parameters we need
+    if [ -z $name  -o  -z $language ]; then
+        echo "When creating a component, you need to specify a name and a target language."
+        exit 1
+    fi
+
+    # Check whether we know the language
+    if [ ! -d "$RESTX_HOME/languages/$language" ]; then
+        echo "RESTx does not know the specified language '$language'. Only these languages are known:"
+        print_known_languages
+        exit 1
+    fi
+
+    # Check if we have a component with the suggested name already
+    chk=`grep " import $name#" "$RESTX_HOME"/"$COMPONENT_LIST"`
+    if [ ! -z "$chk" ]; then
+        echo "A component with name '$name' exists already."
+        exit 1
+    fi
+
+    # Call the language specific placement script
+    $RESTX_HOME/languages/$language/util/placement $1 $RESTX_HOME "$COMPONENT_LIST"
+    exit $?
+}
+
+
+case $1 in
+    start)     start_restx $@;;
+    stop)      stop_restx;;
+    restart)   restart_restx $@;;
+    help)      restx_help;;
+    component) case $2 in
+                 compile) compile_components;;
+                 create)  create_component $3 $4;;
+                 *)       restx_help "'component' parameter '$2'";;
+               esac;;
+    *)         restx_help $1;;
+esac
+
+exit $?
+

@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+
+<head>
+    <title>RESTx GPS Walker Example</title>
+
+    <!-- disable browser caching -->
+    <META Http-Equiv="Cache-Control" Content="no-cache">
+    <META Http-Equiv="Pragma" Content="no-cache">
+    <META Http-Equiv="Expires" Content="0">
+
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAApvtgUnVbhZ4o1RA5ncDnZhQUqOWhSralYm61ppj_eByh3SFpGRRMqBepvBYmX9jOxZUOVeS0hR2J1A"
+            type="text/javascript"></script>
+
+    <script type="text/javascript">
+
+        var req;       /* Global reference to the current XMLHttpRequest object. */
+        var coords;    /* Global storage for the current coordinates.            */
+
+        /**
+         *  A helper method, which encapsulates the sending
+         *  of the AJAX request. Pass the URL, data (just as
+         *  a normal JavaScript object) and the handler method
+         *  for the response.
+         *
+         *  Note that RESTx now supports the sending of parameters
+         *  to service points either on the URL command line or
+         *  in the body of the request (if the bean code allows
+         *  this via the 'allow_params_in_body' attribute.
+         */
+        function sendReq(url, data, handler_method)
+        {
+            req = new XMLHttpRequest();
+            req.open("PUT", url, true);
+            req.setRequestHeader("Accept", "application/json");
+            req.onreadystatechange = handler_method;
+            var jstr = JSON.stringify(data);
+            req.send(jstr);
+        }
+
+        /**
+         *  Called when the page is loaded. Sets up the map,
+         *  and places us in San Francisco. Most importantly,
+         *  it installs the polling method, which gets updated
+         *  coordinates from the server at regular intervals.
+         */
+        function init()
+        {
+            setupMap();
+            goto('SanFrancisco');
+            setInterval("askForNewCoords()", 2000);
+        }
+
+        /**
+         *  Draws a new Google map.
+         */
+        function setupMap()
+        {
+            if (GBrowserIsCompatible())
+            {
+                map = new GMap2(document.getElementById("mapview"));
+                map.addControl(new GSmallMapControl());
+                map.addControl(new GMapTypeControl());
+                //We don't have a location yet
+                marker = null;
+            }
+        }
+
+        /**
+         *  The poller function, which is called at reguler intervals
+         *  and requests a new set of coordinates from the server.
+         *  The server does not maintain state between requests, so we
+         *  are passing to the server the coordinates we currently have.
+         */
+        function askForNewCoords()
+        {
+            sendReq("/resource/MyGPSWalker/walk", coords, receiveNewCoords);
+        }
+
+        /**
+         *  The handler that's called when new coordinates arrive
+         *  from the server. Data arrives as a JSON string, which
+         *  is parsed here. The map is then re-drawn with the new
+         *  coordinates.
+         */
+        function receiveNewCoords()
+        {
+            if (req.readyState == 4) {
+                if (req.status == 200) {
+                    coords = JSON.parse(req.responseText);
+                    drawMap(coords.lat, coords.long);
+                }
+            }
+        }
+
+        /**
+         *  Draws a Google map with the specified coordinates
+         *  and traces a path when updating.
+         */
+        function drawMap(latitude, longitude)
+        {
+            //Create the coordinates
+            var latLng = new GLatLng(latitude, longitude);
+            //Is this a new location?
+            if (!marker)
+            {
+                //Just add the marker
+                marker = new GMarker(latLng);
+                map.addOverlay(marker);
+            }
+            else
+            {
+                //otherwise move the marker and draw a line from the old to the new coordinates
+                map.addOverlay(new GPolyline([marker.getPoint(),latLng]));
+                marker.setPoint(latLng);
+            }
+            //Centre the map
+            map.setCenter(latLng, 15);
+        }
+
+        /**
+         *  Requests the coordinates for a specified city from the server.
+         *  The map needs to be re-initialized to erase the path trace.
+         */
+        function goto(city)
+        {
+            sendReq("/resource/MyGPSWalker/city", { "name" : city }, receiveNewCoords);
+            setupMap();
+        }
+
+    </script>
+
+</head>
+<body onload="init();" onunload="GUnload();">
+<h2>RESTx GPS Walker</h2>
+
+<table>
+    <tr>
+        <td><input id="sanfran" class="button" type="submit" name="Go to San Francisco" value="Go to San Francisco"
+                   onclick="goto('SanFrancisco');"/></td>
+        <td><input id="london" class="button" type="submit" name="Go to London" value="Go to London"
+                   onclick="goto('London');"/></td>
+        <td><input id="valletta" class="button" type="submit" name="Go to Valletta" value="Go to Valletta"
+                   title="The capital of Malta :)" onclick="goto('Valletta');"/></td>
+        <td><input id="auckland" class="button" type="submit" name="Go to Auckland" value="Go to Auckland"
+                   onclick="goto('Auckland');"/></td>
+    </tr>
+</table>
+
+<div id="mapview" style="width: 800px; height: 400px"></div>
+</body>
+</html>

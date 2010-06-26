@@ -1,0 +1,28 @@
+#!/bin/bash
+
+#
+# Puts the sample component into the development directory.
+#
+# $1 is the name of the component.
+# $2 is the $RESTX_HOME directory
+#
+
+#
+# This is the Python version of the placement script
+#
+
+name="$1"
+RESTX_HOME="$2"
+COMPONENT_LIST="$3"
+
+LANGUAGE="Python"
+LANGUAGE_ENDING=".py"
+LANGUAGES_SRC="$RESTX_HOME/languages/python/src"
+RESTX_SRC="$RESTX_HOME/src/python"
+SAMPLE_COMPONENT_NAME="SampleComponent"
+
+# We need to pass a module-name suffix to the generic script (9th parameter).
+# This is necessary, because the import statement for Python requires us to
+# add the filename to the module name.
+"$RESTX_HOME"/bin/generic_placement "$name" "$RESTX_HOME" "$LANGUAGE" "$LANGUAGE_ENDING" "$LANGUAGES_SRC" "$RESTX_SRC" "$SAMPLE_COMPONENT_NAME" "$COMPONENT_LIST" ".""$name" 0
+

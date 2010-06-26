@@ -1,0 +1,144 @@
+#!/bin/bash
+
+#
+# RESTx: Sane, simple and effective data publishing and integration.
+#
+# Copyright (C) 2010   MuleSoft Inc.    http://www.mulesoft.com
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+#
+# A language agnostic script, which gets the proper information
+# from the language specific script to create a new component
+# template.
+#
+# $1:  name of the component ("TestComponent")
+# $2:  $RESTX_HOME directory
+# $3:  the language ("java", "python", etc.)
+# $4:  extension of for the language (".java", ".py", etc.)
+# $5:  source directory of template
+# $6:  $RESTX_SRC directory (development directory for that language)
+# $7:  name of the sample component (usually 'SampleComponent')
+# $8:  location of the __init__.py script where the component import needs to be added
+# $9:  potential suffix to the module name for import
+# $10: flag indicating whether this language requires compilation or not
+#
+
+name="$1"
+RESTX_HOME="$2"
+LANGUAGE="$3"
+LANGUAGE_ENDING="$4"
+LANGUAGES_SRC="$5"
+RESTX_SRC="$6"
+SAMPLE_COMPONENT_NAME="$7"
+COMPONENT_LIST="$8"
+MODULE_NAME_SUFFIX="$9"
+COMPILATION_NEEDED="${10}"
+
+SAMPLE_COMPONENT="$SAMPLE_COMPONENT_NAME""$LANGUAGE_ENDING"
+
+#
+# This is the generic version of the placement script
+#
+
+echo
+echo "=== Creating a new $LANGUAGE component template. Name: ""$name"
+echo
+
+#
+# Find the full path for where the SampleComponent lives
+#
+fullpath="`cd $LANGUAGES_SRC; find * -name $SAMPLE_COMPONENT`"
+
+#
+# The directory in which the new component should be stored
+#
+modulename=`dirname $fullpath`
+newpath="$RESTX_SRC/$modulename"
+
+modulename=`echo $modulename | sed 's/\//\./g'`
+if [ ! -z "$MODULE_NAME_SUFFIX"  -a  "$MODULE_NAME_SUFFIX" != "-" ]; then
+    modulename=$modulename"$MODULE_NAME_SUFFIX"
+fi
+
+#
+# Check for proper capitalization of the name
+#
+if [[ ! "${name:0:1}" =~ [A-Z] ]]; then
+    read -p "Usually, $LANGUAGE class names start with a capital letter. Are you sure you want "${name:0:1}" as starting letter? (y/n): " ui
+    if [ "$ui" == "n" ]; then
+        echo "Please try again with a new component name."
+        echo
+        exit 1
+    fi
+fi
+
+#
+# Check whether the language specific ending was specified already.
+#
+if [[ "$name" == $LANGUAGE_ENDING ]]; then
+    # Name already ends with language specific extension so don't need to append that
+    filename="$name"
+else
+    # Name does not end with language specific extension, so we add that
+    filename="$name"$LANGUAGE_ENDING
+fi
+newfile="$newpath/$filename"
+
+#
+# Check whether a component with that name exists already
+#
+if [ -f "$newfile" ]; then
+    echo "A component with that name already exists in the development directory: $newfile"
+    echo
+    exit 1
+fi
+
+#
+# Copy the sample component in the right place
+#
+
+cp "$LANGUAGES_SRC/$fullpath" "$newfile"
+if [ $? == 1 ]; then
+    echo "Cannot copy sample component to $newfile..."
+    echo
+    exit 1
+fi
+
+#
+# Change the name in the file
+#
+sed -i s/$SAMPLE_COMPONENT_NAME/$name/ $newfile
+if [ $? == 1 ]; then
+    echo "Failed to modify name new component template to $name"
+    echo
+    exit 1
+fi
+
+#
+# Add an import statement to the components-list Python file
+#
+echo "from $modulename import $name#$LANGUAGE" >> $RESTX_HOME/$COMPONENT_LIST
+
+echo -e "Created new component: $newfile\n"
+
+if [ "$COMPILATION_NEEDED" == "0" ]; then
+    echo -e "A server restart is required to enable the component: restxctl restart\n"
+else
+    echo "To enable the component in your server:"
+    echo "    Compile your component:  restxctl component compile"
+    echo -e "    Then restart the server: restxctl restart\n"
+fi
+

@@ -1,0 +1,106 @@
+
+#
+# This script is used to emulate the start-stop-daemon
+# command on those systems that do not support this command.
+#
+# start-stop-daemon comes with Debian based systems, but is
+# missing on RedHat derivatives, for example.
+#
+# Only a small number of the start-stop-daemon options and
+# capabilities are supported.
+#
+# --start
+# --background
+# --startas
+# --stop
+# --pidfile
+# --background
+#
+# Use '--' to declare all remaining parameters to be options
+# for the starting command.
+#
+
+start_option=0
+stop_option=0
+startas=
+pidfile=
+argstr=""
+background_option=0
+
+
+# Handle the few supported command line arguments
+while (( "$#" )); do
+    if [ $1 == "--start" ]; then
+        start_option=1
+    elif [ $1 == "--stop" ]; then
+        stop_option=1
+    elif [ $1 == "--background" ]; then
+        background_option=1
+    elif [ $1 == "--startas" ]; then
+        startas=$2
+        shift
+    elif [ $1 == "--pidfile" ]; then
+        pidfile=$2
+        shift
+    elif [ $1 == "--" ]; then
+        shift
+        argstr=$@
+        break
+    else
+        echo "Unknown option '$1'."
+        exit 1
+    fi
+    shift
+done
+
+
+if [ ! -z $pidfile  -a  -f $pidfile ]; then
+    #
+    # Pidfile is specified only when we want to stop a process first.
+    # We are only here if the pidfile actually exists.
+    #
+    PID=`cat $pidfile`
+    if [ $? == 1 ]; then
+        echo "Could not read the pid file '$pidfile'."
+        exit 1
+    fi
+    if [ $start_option == 1 ]; then
+        if [ -e /proc/$PID ]; then
+            echo "Process already exists."
+            exit 1
+        fi
+    fi
+    # Only kill stuff if start or stop option was specified
+    if [ $stop_option == 1 ]; then
+        kill $PID
+        if [ $? != 0 ]; then
+            echo "Could not kill process $PID."
+            exit 1
+        fi
+    fi
+else
+    #
+    # No pidfile specified or exists. Only a problem wit user
+    # specifically requested a stop.
+    #
+    if [ $stop_option == 1 ]; then
+        if [ ! -z $pidfile ]; then
+            echo "Could not kill a process, the specified PID file does not exist."
+        else
+            echo "Could not kill a process, no PID file was specified."
+        fi
+        exit 1
+    fi
+fi
+
+
+if [ $start_option == 1 ]; then
+    if [ $background_option == 1 ]; then
+        $startas $argstr $> /dev/null &
+    else
+        $startas $argstr
+    fi
+fi
+
+exit $?
+
