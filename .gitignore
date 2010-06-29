@@ -4,5 +4,7 @@
 *#
 *.swp
 resourceDB/*
+!resourceDB/_*
 storageDB/*
 static_files/*
+!static_files/restx/*

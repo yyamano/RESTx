@@ -1,0 +1,15 @@
+{
+    "public": {
+        "desc": "Displays a resource-creation form for a component",
+        "uri": "/resource/_createResourceForm", 
+        "name": "_createResourceForm"
+    }, 
+    "private": {
+        "resource_creation_params": {
+            "suggested_name": "_createResourceForm", 
+            "desc": "Displays a resource-creation form for a component"
+        }, 
+        "params": {}, 
+        "code_uri": "/code/_ResourceCreateForm"
+    }
+}
