@@ -31,7 +31,7 @@ from restx.render.baserenderer import BaseRenderer
 
 from restx.platform_specifics  import *
 
-from org.mulesource.restx.util import Url
+from org.mulesoft.restx.util import Url
 
 
 def _default(obj):

@@ -74,7 +74,7 @@ function exec_test
        
     else
 
-        echo "Ok. Found '$1' executable at: "$EXEC_TEST
+        echo "Ok. Found '$EXEC_TEST' executable."
         EXEC_PATH=$EXEC_TEST
         return 0
     fi
@@ -142,7 +142,14 @@ echo -e "\n=== Welcome to the RESTx installer.\n=== (c) 2010 MuleSoft.
 echo -e "#!/bin/bash\n\n# Auto generated during install...\n\n" > $ENVIRON_TMP_FILE
 
 # Check whether a proper JVM is installed.
-exec_test "java" "Please install a JAVA SDK (at least version 1.6) or runtime and make it available in the path."
+if [ ! -z "$JAVA_HOME" ]; then
+    JAVA_EXEC="$JAVA_HOME"/bin/java
+    JAVAC_EXEC="$JAVA_HOME"/bin/javac
+else
+    JAVA_EXEC="java"
+    JAVAC_EXEC="javac"
+fi
+exec_test "$JAVA_EXEC" "Please install a JAVA SDK (at least version 1.6) or runtime and make it available in the path."
 JAVA_EXECUTABLE=$EXEC_PATH
 echo 'JAVA_EXECUTABLE='$JAVA_EXECUTABLE >> $ENVIRON_TMP_FILE
 
@@ -150,12 +157,12 @@ echo 'JAVA_EXECUTABLE='$JAVA_EXECUTABLE >> $ENVIRON_TMP_FILE
 # Testing for javac. Fail quietly, since not having JAVAC is permissible,
 # it just doesn't allow us to compile Java components.
 #
-exec_test "javac" ""
+exec_test "$JAVAC_EXEC" ""
 if [ $? == 0 ]; then
     JAVAC_EXECUTABLE=$EXEC_PATH
     echo 'JAVAC_EXECUTABLE='$JAVAC_EXECUTABLE >> $ENVIRON_TMP_FILE
 else
-    if [ [ ! -f "$RESTX_HOME/lib/restx.jar" ] -o  [ ! -f "$RESTX_HOME/lib/json.jar" ] ]; then
+    if [ ! -f "$RESTX_HOME/lib/restx.jar" ] ||  [ ! -f "$RESTX_HOME/lib/json.jar" ]; then
         error_report "No Java compiler (javac) could be found and no JAR files are provides."
         exit 1
     fi
@@ -171,7 +178,7 @@ fi
 #  *) error_report "Installed Java compiler does not seem to be version 1.6."
 #     exit 1;;
 #esac 
-case "`java -version 2>&1`" in 
+case "`$JAVA_EXECUTABLE -version 2>&1`" in
   *1.6*) ;;
   *) error_report "Installed Java run time does not seem to be version 1.6."
      exit 1;;

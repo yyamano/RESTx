@@ -29,8 +29,8 @@ import traceback
 # RESTx imports
 import restx.settings as settings
 
-from org.mulesource.restx.exception     import *
-from org.mulesource.restx.component.api import HTTP, HttpMethod, Result
+from org.mulesoft.restx.exception     import *
+from org.mulesoft.restx.component.api import HTTP, HttpMethod, Result
 
 from restx.logger                       import *
 from restx.core.basebrowser             import BaseBrowser

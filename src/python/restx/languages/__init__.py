@@ -37,9 +37,9 @@ conversion function whenever we use the components.
 
 from restx.platform_specifics           import PLATFORM, PLATFORM_JYTHON
 
-from org.mulesource.restx.exception     import *
-from org.mulesource.restx.component.api import HTTP, HttpMethod, Result
-from org.mulesource.restx.parameter     import ParameterDefNumber
+from org.mulesoft.restx.exception     import *
+from org.mulesoft.restx.component.api import HTTP, HttpMethod, Result
+from org.mulesoft.restx.parameter     import ParameterDefNumber
 
 if PLATFORM == PLATFORM_JYTHON:
     import java.lang.Exception

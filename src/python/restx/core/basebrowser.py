@@ -28,7 +28,7 @@ import restx.settings as settings
 from restx.render import HtmlRenderer
 from restx.render import JsonRenderer
 
-from org.mulesource.restx.component.api import HTTP, Result
+from org.mulesoft.restx.component.api import HTTP, Result
 
 class BaseBrowser(object):
     """

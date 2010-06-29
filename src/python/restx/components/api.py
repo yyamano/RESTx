@@ -26,7 +26,7 @@ from restx.components.BaseComponent  import BaseComponent
 from restx.core.parameter            import *
 from restx.resources.resource_runner import accessResource
 
-from org.mulesource.restx.exception  import *
+from org.mulesoft.restx.exception  import *
 
-from org.mulesource.restx.component.api import Result, HTTP, HttpMethod
+from org.mulesoft.restx.component.api import Result, HTTP, HttpMethod
 

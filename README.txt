@@ -1,6 +1,10 @@
 
 This is RESTx.
 
+The fastest way to create RESTful resourcs.
+
+
+
 For full documentation please visit:
 
     http://restx.mulesoft.com

@@ -26,7 +26,7 @@ import restxjson as json
 
 # RESTx imports
 from restx.storageabstraction.file_storage import FileStorage
-from org.mulesource.restx.exception        import *
+from org.mulesoft.restx.exception        import *
 
 class ResourceStorage(FileStorage):
     """

@@ -68,7 +68,7 @@ function compile_all
 {
     echo -e "\nPreparing to compile RESTx Java sources (including all Java components)."
     echo "Please wait..."
-    restxcompile_source org/mulesource/restx/
+    restxcompile_source org/mulesoft/restx/
     if [ $? == 0 ]; then
         echo -e "Compilation was successful.\n"
         exit 0
@@ -86,7 +86,7 @@ function compile_components
 {
     echo -e "\nPreparing to compile RESTx Java components only."
     echo "Please wait..."
-    restxcompile_source org/mulesource/restx/ org/mulesource/restx/component/api/
+    restxcompile_source org/mulesoft/restx/ org/mulesoft/restx/component/api/
     if [ $? == 0 ]; then
         echo "Compilation was successful."
         return 0

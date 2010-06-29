@@ -32,7 +32,7 @@ import restx.settings as settings
 from restx.core.parameter                  import *
 from restx.storageabstraction.file_storage import FileStorage
 
-from org.mulesource.restx.util import Url
+from org.mulesoft.restx.util import Url
 
 #
 # Utility method.

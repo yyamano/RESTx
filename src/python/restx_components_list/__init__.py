@@ -24,5 +24,5 @@ from restx.components.GsearchComponent      import GsearchComponent#Python
 from restx.components.CombinerComponent     import CombinerComponent#Python
 from restx.components.GpsWalkerComponent    import GpsWalkerComponent#Python
 from restx.components.StorageComponent      import StorageComponent#Python
-from org.mulesource.restx.component         import JavaTwitterComponent#Java
-from org.mulesource.restx.component         import TestComponent#Java
+from org.mulesoft.restx.component         import JavaTwitterComponent#Java
+from org.mulesoft.restx.component         import TestComponent#Java

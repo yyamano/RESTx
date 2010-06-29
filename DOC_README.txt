@@ -12,5 +12,5 @@ are created as follows:
     For Java:
 
         $ cd src/java
-        $ javadoc -d restxclient_docs org.mulesource.restx.clientapi
+        $ javadoc -d restxclient_docs org.mulesoft.restx.clientapi
 

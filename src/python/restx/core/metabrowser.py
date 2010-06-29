@@ -26,8 +26,8 @@ import restx.settings as settings
 
 from restx.core.basebrowser import BaseBrowser
 
-from org.mulesource.restx.util          import Url
-from org.mulesource.restx.component.api import HTTP, Result
+from org.mulesoft.restx.util          import Url
+from org.mulesoft.restx.component.api import HTTP, Result
 
         
 class MetaBrowser(BaseBrowser):

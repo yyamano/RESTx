@@ -35,7 +35,7 @@ concrete HttpServer implementation later on.
 # The RestxHttpRequest class is an abstract Java class, thus giving us
 # a convenient Java and Python interface to the same Python object.
 #
-from org.mulesource.restx import RestxHttpRequest
+from org.mulesoft.restx import RestxHttpRequest
 
 
 class BaseHttpServer(object):

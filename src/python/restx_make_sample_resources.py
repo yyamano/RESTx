@@ -177,7 +177,7 @@ send_test({
 # Create a Salesforce component
 send_test({
             'params' : {
-                'username'       : 'development@mulesource.com.support',
+                'username'       : 'development@mulesoft.com.support',
                 'password'       : 'mul3d3v201510',
                 'security_token' : '9UUFx84vYkL1GcUPGOPQG0IfB',
                 'API_URI'        : 'https://test.salesforce.com/services/Soap/u/16.0'

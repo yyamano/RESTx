@@ -12,9 +12,4 @@ in your enterprise or in the cloud.</p>
 <p>Find out more about the RESTx project, view detailed documentation
 and examples, tutorials, howtos and connect to the RESTx developer and
 user community at the official project web-site: <a target="_blank" href="http://restx.mulesoft.org">http://restx.mulesoft.org</a></p>
-<hr>
-<p>RESTx  Copyright (C) 2010  MuleSoft Inc.</p>
-<p>This program comes with ABSOLUTELY NO WARRANTY; for details view
-the LICENSE.txt file or view the <a target="_blank" href="http://www.gnu.org/licenses/gpl-3.0.txt">text of the GPLv3 license</a>.</p>
-<p>This is free software, and you are welcome to redistribute it
-under certain conditions.</p>
+<p><a target="_blank" href="http://restx.mulesoft.org">RESTx</a> is freely distributable under the <a target="_blank" href="http://www.gnu.org/licenses/gpl-3.0.txt">GPLv3 License</a>.</p>

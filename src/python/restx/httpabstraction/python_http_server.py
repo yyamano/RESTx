@@ -40,7 +40,7 @@ from restx.logger import *
 
 from restx.httpabstraction.base_server import BaseHttpServer, RestxHttpRequest
 
-from org.mulesource.restx.component.api import HTTP
+from org.mulesoft.restx.component.api import HTTP
 
 from restx.platform_specifics import *
 if PLATFORM == PLATFORM_PYTHON:

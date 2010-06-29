@@ -29,8 +29,8 @@ import restx.settings as settings
 
 from restx.storageabstraction.file_storage import FileStorage
 
-from org.mulesource.restx.component        import BaseComponentCapabilities
-from org.mulesource.restx.component.api    import HttpResult, HTTP
+from org.mulesoft.restx.component        import BaseComponentCapabilities
+from org.mulesoft.restx.component.api    import HttpResult, HTTP
 
 class BaseCapabilities(BaseComponentCapabilities):
     """

@@ -27,7 +27,7 @@ import urllib
 from   restx.components.api   import *
 import restx.settings         as     settings
 import restx.components
-from org.mulesource.restx.exception import *
+from org.mulesoft.restx.exception import *
 from restx.resources          import makeResource 
 
 

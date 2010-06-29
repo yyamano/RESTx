@@ -29,7 +29,7 @@ import restxjson as json
 from google.appengine.ext import db
 
 # RESTx imports
-from org.mulesource.restx.exception import *
+from org.mulesoft.restx.exception import *
 
 class ResourceStorage(db.Model):
     name = db.StringProperty(multiline=False)

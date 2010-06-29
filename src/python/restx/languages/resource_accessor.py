@@ -20,9 +20,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 from restx.resources.resource_runner    import accessResource
-from org.mulesource.restx.component.api import HttpResult
+from org.mulesoft.restx.component.api import HttpResult
 
-from org.mulesource.restx               import ResourceAccessorInterface
+from org.mulesoft.restx               import ResourceAccessorInterface
 
 class ResourceAccessor(ResourceAccessorInterface):
     """

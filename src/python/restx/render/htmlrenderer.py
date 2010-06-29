@@ -32,7 +32,7 @@ import restx.settings as settings
 from restx.render.baserenderer import BaseRenderer
 from restx.core.util           import bool_view
 
-from org.mulesource.restx.util import Url
+from org.mulesoft.restx.util import Url
 
 class HtmlRenderer(BaseRenderer):
     """

@@ -52,12 +52,12 @@ import os
 import restx.settings as settings
 from restx.platform_specifics import STORAGE_OBJECT
 
-from org.mulesource.restx.exception       import *
+from org.mulesoft.restx.exception       import *
 from restx.logger           import *
 from restx.core.parameter   import TYPE_COMPATIBILITY
 from restx.languages import *
 
-from org.mulesource.restx.util import Url
+from org.mulesoft.restx.util import Url
 
 
 EXCLUDED_NAMES = [ "readme.txt" ]

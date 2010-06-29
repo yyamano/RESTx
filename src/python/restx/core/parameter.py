@@ -26,7 +26,7 @@ from datetime import date
 from datetime import time as time_class
 
 from restx.platform_specifics       import PLATFORM, PLATFORM_JYTHON
-from org.mulesource.restx.exception import RestxException
+from org.mulesoft.restx.exception import RestxException
 
 #
 # Types for resource parameters

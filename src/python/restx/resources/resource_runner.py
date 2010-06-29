@@ -27,8 +27,8 @@ import restx.core.codebrowser  # Wanted to be much more selective here, but a ci
                              # import issue was most easily resolved like this.
                              # We only need getComponentInstance() from this module.
 
-from org.mulesource.restx.exception import *
-from org.mulesource.restx.component.api import HTTP, Result
+from org.mulesoft.restx.exception import *
+from org.mulesoft.restx.component.api import HTTP, Result
 from restx.resources  import paramSanityCheck, fillDefaults, convertTypes, \
                            retrieveResourceFromStorage, getResourceUri
 

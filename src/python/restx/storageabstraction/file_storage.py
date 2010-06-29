@@ -28,8 +28,8 @@ import os
 
 # RESTx imports
 import restx.settings as settings
-from org.mulesource.restx.exception     import *
-from org.mulesource.restx.component.api import FileStore
+from org.mulesoft.restx.exception     import *
+from org.mulesoft.restx.component.api import FileStore
 
 class FileStorage(FileStore):
     """

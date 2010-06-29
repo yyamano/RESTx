@@ -26,8 +26,8 @@ to the appropriate browsers.
 # RESTx imports
 import restx.settings as settings
 
-from org.mulesource.restx.exception             import *
-from org.mulesource.restx.component.api         import HTTP, Result
+from org.mulesoft.restx.exception             import *
+from org.mulesoft.restx.component.api         import HTTP, Result
 
 from restx.core.basebrowser       import BaseBrowser
 from restx.core.staticbrowser     import StaticBrowser

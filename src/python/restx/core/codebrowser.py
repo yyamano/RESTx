@@ -28,16 +28,16 @@ import restxjson as json
 # RESTx imports
 import restx.settings as settings
 
-from org.mulesource.restx.exception       import RestxException
-from org.mulesource.restx.component.api   import Result
+from org.mulesoft.restx.exception       import RestxException
+from org.mulesoft.restx.component.api   import Result
 
 from restx.components       import _CODE_MAP
 from restx.resources        import makeResource 
 from restx.core.basebrowser import BaseBrowser
 from restx.languages        import *
 
-from org.mulesource.restx.util          import Url
-from org.mulesource.restx.component.api import HTTP;
+from org.mulesoft.restx.util          import Url
+from org.mulesoft.restx.component.api import HTTP;
 
 EXCLUDE_PREFIXES = [ "_" ]
 

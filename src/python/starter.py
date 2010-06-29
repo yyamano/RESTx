@@ -38,10 +38,10 @@ import restx.logger   as logger
 from restx.core                import RequestDispatcher
 from restx.platform_specifics  import *
 
-from org.mulesource.restx      import Settings
-from org.mulesource.restx.util import Url
+from org.mulesoft.restx      import Settings
+from org.mulesoft.restx.util import Url
 
-from org.mulesource.restx.component.api import *
+from org.mulesoft.restx.component.api import *
 
 def print_help():
     print \

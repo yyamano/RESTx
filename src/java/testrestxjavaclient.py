@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
 
-from org.mulesource.restx.clientapi import RestxServer
+from org.mulesoft.restx.clientapi import RestxServer
 server = RestxServer("http://localhost:8001")
 
 component = server.getComponent("TestComponent")
