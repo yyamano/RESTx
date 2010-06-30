@@ -22,11 +22,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 Serves static files.
 
 """
+import array
+
 import restx.settings as settings
 
 from restx.core.basebrowser import BaseBrowser
 
 from org.mulesoft.restx.component.api import HTTP, Result
+from org.mulesoft.restx.util import RawFileReader
+
+from java.io import File
+from java.io import FileInputStream
+from java.nio import ByteBuffer
+
 
         
 class StaticBrowser(BaseBrowser):
@@ -72,10 +80,10 @@ class StaticBrowser(BaseBrowser):
             path = path[:-1]
             
         try:
-            f = open(settings.get_root_dir()+settings.STATIC_LOCATION + path, "rb")
-            data = f.read()
-            f.close()
-            res = Result.ok(data)
+            fname = settings.get_root_dir()+settings.STATIC_LOCATION + path
+            rfr   = RawFileReader()
+            data  = rfr.readFile(fname)
+            res   = Result.ok(data)
             # Examine the extension of the filename to see if we can set the content
             # type based on any of them. If we set the content type here then the
             # request dispatcher will not attempt to call a render method on the

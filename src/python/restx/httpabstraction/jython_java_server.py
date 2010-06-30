@@ -33,7 +33,7 @@ from java.net               import InetSocketAddress
 from java.lang              import String
 from java.io                import InputStreamReader;
 from java.io                import BufferedReader
-from java.io                import DataOutputStream
+from java.io                import OutputStream
 from java.lang              import Exception as JavaException
 from java.util.concurrent   import Executors;
 
@@ -116,7 +116,7 @@ class JythonJavaHttpRequest(RestxHttpRequest):
         @type body:     string
         
         """
-        self.__response_body = String(body if body else "")
+        self.__response_body = body if body else ""
         
     def setResponseHeader(self, name, value):
         """
@@ -271,7 +271,7 @@ class JythonJavaHttpRequest(RestxHttpRequest):
             response_headers = self.__native_req.getResponseHeaders()
             for name, value in self.__response_headers.items():
                 response_headers[name] = [ value ]
-            self.__native_req.sendResponseHeaders(self.__response_code, self.__response_body.length())
+            self.__native_req.sendResponseHeaders(self.__response_code, len(self.__response_body))
     
     def sendResponseBody(self):
         """
@@ -279,8 +279,8 @@ class JythonJavaHttpRequest(RestxHttpRequest):
         
         """
         if self.__native_req:
-            os = DataOutputStream(self.__native_req.getResponseBody())
-            num = os.writeBytes(self.__response_body)
+            os = self.__native_req.getResponseBody()
+            os.write(self.__response_body, 0, len(self.__response_body))
             os.flush()
             os.close()
         

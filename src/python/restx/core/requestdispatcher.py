@@ -65,7 +65,6 @@ class RequestDispatcher(object):
         @rtype:           Tuple of (Result, dict)
         
         """
-        #print "---- ", request.getRequestHeaders()
         content_type = None
         try:
             if request.getRequestPath() == "/":
