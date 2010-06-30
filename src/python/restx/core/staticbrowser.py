@@ -72,7 +72,7 @@ class StaticBrowser(BaseBrowser):
             path = path[:-1]
             
         try:
-            f = open(settings.get_root_dir()+settings.STATIC_LOCATION + path, "r")
+            f = open(settings.get_root_dir()+settings.STATIC_LOCATION + path, "rb")
             data = f.read()
             f.close()
             res = Result.ok(data)
