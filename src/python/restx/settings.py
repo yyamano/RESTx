@@ -145,14 +145,14 @@ HTML_HEADER = """
 
     </head>
     <body>
-        <a target="_blank" href="http://restx.mulesoft.org"><img style="padding-right:10px" width="97" height="30" src="/static/restx/images/restx_logo.png" alt="RESTx" /></a>
+        <a target="_blank" href="http://restx.mulesoft.org"><img border=0 style="padding-right:10px" width="97" height="30" src="/static/restx/images/restx_logo.png" alt="RESTx" /></a>
         <i>The fastest and easiest way to create RESTful resources</i>
         <hr>
 """
 
 HTML_FOOTER = """
 <hr>
-<center><a target="_blank" href="http://mulesoft.com"><img src="/static/restx/images/logo-mule-s.png" alt="MuleSoft" /></a></center>
+<center><a border=0 target="_blank" href="http://mulesoft.com"><img border=0 src="/static/restx/images/logo-mule-s.png" alt="MuleSoft" /></a></center>
 </body>
 </html>
 """
