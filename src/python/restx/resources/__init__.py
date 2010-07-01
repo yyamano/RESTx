@@ -345,6 +345,10 @@ def makeResource(component_class, params):
     paramSanityCheck(provided_resource_creation_params,
                      component_params_def['resource_creation_params'],
                      'resource_creation_params')
+    # Before storing the parameters, we make sure they are converted to the
+    # types that have been specified
+    convertTypes(component_params_def['params'], provided_params)
+
 
     # The parameters passed the sanity checks. We can now create the resource definition.
     suggested_name = provided_resource_creation_params['suggested_name']
