@@ -185,7 +185,7 @@ class HtmlRenderer(BaseRenderer):
             # odd...)
             data = ''.join([ (str(x) if x in string.printable else "") for x in data ])
         # Note that when we use Jython we still have unicode (the conversion to str
-        # doesn't seeem to work). That's why in the following line we have to test
+        # doesn't seem to work). That's why in the following line we have to test
         # for str() as well as unicode(). The return in unicode is not a problem
         # for the Java server.
         if type(data) is str  or  type(data) is unicode:
