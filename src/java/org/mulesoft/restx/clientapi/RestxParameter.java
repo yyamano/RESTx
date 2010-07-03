@@ -24,6 +24,9 @@ import java.util.HashMap;
 import java.lang.Number;
 import java.math.BigDecimal;
 
+/**
+ * Represents a parameter for resource creation time or service methods.
+ */
 public class RestxParameter
 {
     protected final static String   DESC_KEY       = "desc";

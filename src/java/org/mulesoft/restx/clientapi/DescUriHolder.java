@@ -21,7 +21,7 @@
 package org.mulesoft.restx.clientapi;
 
 /**
- * Only used here to hold description and uris of
+ * Only used here to hold description and URIs of
  * components and resources.
  * 
  * When we query /code or /resource on the server, we
