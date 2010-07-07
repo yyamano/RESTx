@@ -49,15 +49,16 @@ The stored representation of a resource looks like this:
 import os
 
 # RESTx imports
+import restx.components
 import restx.settings as settings
-from restx.platform_specifics import STORAGE_OBJECT
 
-from org.mulesoft.restx.exception       import *
-from restx.logger           import *
-from restx.core.parameter   import TYPE_COMPATIBILITY
-from restx.languages import *
+from restx.platform_specifics     import STORAGE_OBJECT
+from restx.logger                 import *
+from restx.core.parameter         import TYPE_COMPATIBILITY
+from restx.languages              import *
 
-from org.mulesoft.restx.util import Url
+from org.mulesoft.restx.exception import *
+from org.mulesoft.restx.util      import Url
 
 
 EXCLUDED_NAMES = [ "readme.txt" ]
@@ -274,7 +275,7 @@ def convertTypes(param_def_dict, param_dict):
                 raise RestxException("Incompatible type for parameter '%s': %s" % (pname, str(e)))
 
 
-def makeResource(component_class, params):
+def makeResourceFromClass(component_class, params):
     """
     Create a new resource representation from the
     specified component class and parameter dictionary
@@ -298,21 +299,21 @@ def makeResource(component_class, params):
     parameters and also fills in default values where
     available.
     
-    @param component_class:    A class (not instance) derived from BaseComponent.
-    @type  component_class:    BaseComponent or derived.
+    @param component_class: A class (not instance) derived from BaseComponent.
+    @type  component_class: BaseComponent or derived.
     
-    @param params:        The resource parameters provided by the client.
-                          Needs to contain at least a 'params' dictionary
-                          or a 'resource_creation_dictionary'. Can contain
-                          both.
-    @type  params:        dict
+    @param params:          The resource parameters provided by the client.
+                            Needs to contain at least a 'params' dictionary
+                            or a 'resource_creation_dictionary'. Can contain
+                            both.
+    @type  params:          dict
     
-    @return:              Success message in form of dictionary that contains
-                          "status", "name" and "uri" fields.
-    @rtype:               dict
+    @return:                Success message in form of dictionary that contains
+                            "status", "name" and "uri" fields.
+    @rtype:                 dict
     
     @raise RestxException:  If the resource creation failed or there was a
-                          problem with the provided parameters.
+                            problem with the provided parameters.
 
     """    
     # We get the meta data (parameter definition) from the component
@@ -387,4 +388,31 @@ def makeResource(component_class, params):
     return success_body
 
     
+def makeResource(component_name, params):
+    """
+    Create a new resource representation from the
+    component class specified by its name and the parameter
+    dictionary and store it on disk.
+
+    Finds the class and then calls makeResourceFromClass()
+
+    @param component_name:  Name of a class derived from BaseComponent.
+    @type  component_name:  BaseComponent or derived.
+    
+    @param params:          The resource parameters provided by the client.
+                            Needs to contain at least a 'params' dictionary
+                            or a 'resource_creation_dictionary'. Can contain
+                            both.
+    @type  params:          dict
+    
+    @return:                Success message in form of dictionary that contains
+                            "status", "name" and "uri" fields.
+    @rtype:                 dict
+    
+    @raise RestxException:  If the resource creation failed or there was a
+                            problem with the provided parameters.
+
+    """
+    component_class = restx.components._CODE_MAP.get(component_name)
+    return makeResourceFromClass(component_class, params)
 

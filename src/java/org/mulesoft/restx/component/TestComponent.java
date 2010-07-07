@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.mulesoft.restx.component.api.*;
+import org.mulesoft.restx.exception.*;
 
 
 @ComponentInfo(name        = "TestComponent",
@@ -73,6 +74,18 @@ public class TestComponent extends BaseComponent
         return Result.ok(v);
     }
  
+    @Service(description = "Makes another resource")
+    public Result maker(HttpMethod method, String input) throws RestxException
+    {
+        HashMap params = new HashMap();
+        params.put("api_key", "123123");
+        params.put("default_search", "java");
+
+        MakeResourceResult res = makeResource("GoogleSearchComponent", "NewResourceName", "Description for my resource", params);
+        String resbuf = "Created a resource! Status: " + res.status + " --- Name: " + res.name + " --- URI: " + res.uri;
+        return Result.ok(resbuf);
+    }
+
     @Service(description = "This accesses a Python Google search resource and returns the result")
     public Result blahblah(HttpMethod method, String input)
     {

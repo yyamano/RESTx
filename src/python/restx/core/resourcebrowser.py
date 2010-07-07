@@ -29,14 +29,14 @@ import traceback
 # RESTx imports
 import restx.settings as settings
 
-from org.mulesoft.restx.exception     import *
-from org.mulesoft.restx.component.api import HTTP, HttpMethod, Result
+from org.mulesoft.restx.exception       import *
+from org.mulesoft.restx.component.api   import HTTP, HttpMethod, Result
 
 from restx.logger                       import *
 from restx.core.basebrowser             import BaseBrowser
 from restx.core.codebrowser             import getComponentInstance
-from restx.resources                    import paramSanityCheck, fillDefaults, makeResource, listResources, \
-                                             retrieveResourceFromStorage, getResourceUri, deleteResourceFromStorage
+from restx.resources                    import paramSanityCheck, fillDefaults, listResources, \
+                                               retrieveResourceFromStorage, getResourceUri, deleteResourceFromStorage
 from restx.resources.resource_runner    import _accessComponentService, _getResourceDetails
 
 import java.lang.Exception

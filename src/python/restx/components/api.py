@@ -22,11 +22,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 Expose the complete API for component authors.
 
 """
-from restx.components.BaseComponent  import BaseComponent
-from restx.core.parameter            import *
-from restx.resources.resource_runner import accessResource
+from restx.components.BaseComponent   import BaseComponent
+from restx.core.parameter             import *
+from restx.resources.resource_runner  import accessResource
+from restx.resources                  import makeResource
 
-from org.mulesoft.restx.exception  import *
-
+from org.mulesoft.restx.exception     import *
 from org.mulesoft.restx.component.api import Result, HTTP, HttpMethod
 

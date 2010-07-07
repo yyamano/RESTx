@@ -18,19 +18,13 @@
  */ 
 
 
-package org.mulesoft.restx;
+package org.mulesoft.restx.component.api;
 
-import java.util.Map;
-
-import org.mulesoft.restx.component.api.HttpMethod;
-import org.mulesoft.restx.component.api.HttpResult;
-import org.mulesoft.restx.component.api.MakeResourceResult;
-
-public interface ResourceAccessorInterface
+public class MakeResourceResult
 {
-    public HttpResult         accessResourceProxy(String uri, String input, Map<?,?> params, HttpMethod method);
-    public MakeResourceResult makeResourceProxy(String componentClassName, String suggestedResourceName,
-                                                String resourceDescription, Map<?,?> resourceParameters);
+    public String    name;
+    public String    status;
+    public String    uri;
 }
 
 

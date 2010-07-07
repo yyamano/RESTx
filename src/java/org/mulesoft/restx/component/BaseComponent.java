@@ -39,24 +39,24 @@ import org.mulesoft.restx.parameter.*;
 
 public abstract class BaseComponent
 {
-    public final String                              LANGUAGE = "JAVA";
-    public       ComponentDescriptor                 componentDescriptor = null;
-    public       ResourceAccessorInterface           resourceAccessor;
+    public final String                               LANGUAGE = "JAVA";
+    public       ComponentDescriptor                  componentDescriptor = null;
+    public       ResourceAccessorInterface            resourceAccessor;
 
-    protected    HashMap<String, Object>             services;
+    protected    HashMap<String, Object>              services;
 
-    private      RestxHttpRequest                      httpRequest;
-    private      String                              resourceName;
-    private      BaseComponentCapabilities           baseCapabilities;
+    private      RestxHttpRequest                     httpRequest;
+    private      String                               resourceName;
+    private      BaseComponentCapabilities            baseCapabilities;
     
-    private      boolean                             annotationsHaveBeenParsed = false;
+    private      boolean                              annotationsHaveBeenParsed = false;
     // We use the following to record the order of parameters as well as their
     // Java types for each service when we are parsing the annotations. Later,
     // this helps our service-method calling proxy to arrange the parameters in
     // the right order - since Java does not allow the **fkwargs notation of named
     // parameters - and also allows us to do the necessary type casting.
-    private      HashMap<String, ArrayList<String>>  paramOrder;
-    private      HashMap<String, ArrayList<Class<?>>>   paramTypes;
+    private      HashMap<String, ArrayList<String>>   paramOrder;
+    private      HashMap<String, ArrayList<Class<?>>> paramTypes;
     
     public BaseComponent()
     {
@@ -121,6 +121,12 @@ public abstract class BaseComponent
     public HttpResult accessResource(String uri, String input, Map<?,?> params, HttpMethod method)
     {
         return resourceAccessor.accessResourceProxy(uri, input, params, method);
+    }
+    
+    public MakeResourceResult makeResource(String componentClassName, String suggestedResourceName,
+                                           String resourceDescription, Map<?,?> resourceParameters) throws RestxException
+    {
+        return resourceAccessor.makeResourceProxy(componentClassName, suggestedResourceName, resourceDescription, resourceParameters);
     }
     
     private ParameterDef createParamDefType(Class<?> paramType, String desc,

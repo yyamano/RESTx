@@ -24,12 +24,11 @@ A sample template for RESTx components, written in Python.
 """
 import urllib
 
-from   restx.components.api   import *
-import restx.settings         as     settings
 import restx.components
-from org.mulesoft.restx.exception import *
-from restx.resources          import makeResource 
+import restx.settings as settings
 
+from   restx.components.api         import *
+from   org.mulesoft.restx.exception import *
 
 class _ResourceCreateForm(BaseComponent):
     # Name, description and doc string of the component as it should appear to the user.
@@ -94,10 +93,8 @@ The user submits the filled-out form and a new resource is created.
                     if value:
                         d2[pe] = value
                     
-
-        component_class = restx.components._CODE_MAP.get(component_name)
         try:
-            ret_msg = makeResource(component_class, d)
+            ret_msg = makeResource(component_name, d)
         except RestxException, e:
             return self.error_return(component_name, e.msg)
         

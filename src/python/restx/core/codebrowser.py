@@ -31,13 +31,14 @@ import restx.settings as settings
 from org.mulesoft.restx.exception       import RestxException
 from org.mulesoft.restx.component.api   import Result
 
-from restx.components       import _CODE_MAP
-from restx.resources        import makeResource 
-from restx.core.basebrowser import BaseBrowser
-from restx.languages        import *
+from restx.components                   import _CODE_MAP
 
-from org.mulesoft.restx.util          import Url
-from org.mulesoft.restx.component.api import HTTP;
+from restx.resources                    import makeResourceFromClass
+from restx.core.basebrowser             import BaseBrowser
+from restx.languages                    import *
+
+from org.mulesoft.restx.util            import Url
+from org.mulesoft.restx.component.api   import HTTP;
 
 EXCLUDE_PREFIXES = [ "_" ]
 
@@ -179,7 +180,7 @@ class CodeBrowser(BaseBrowser):
             param_dict = json.loads(body)
         except Exception, e:
             raise RestxException("Malformed request body: " + str(e))
-        ret_msg = makeResource(component_class, param_dict)
+        ret_msg = makeResourceFromClass(component_class, param_dict)
         return Result.created(ret_msg['uri'], ret_msg)
     
     def process(self):

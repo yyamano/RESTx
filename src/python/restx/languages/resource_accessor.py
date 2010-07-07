@@ -18,16 +18,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
 
-
+from restx.resources                    import makeResource
 from restx.resources.resource_runner    import accessResource
-from org.mulesoft.restx.component.api import HttpResult
-
-from org.mulesoft.restx               import ResourceAccessorInterface
+from org.mulesoft.restx.component.api   import HttpResult, MakeResourceResult
+from org.mulesoft.restx                 import ResourceAccessorInterface
 
 class ResourceAccessor(ResourceAccessorInterface):
     """
     This is a helper class that we use to give the Java base component
-    access to our accessResource() method.
+    access to our makeResource() and accessResource() method.
     
     When a Java component is invoked, it receives an instance
     of this class here, which provides painless access to the
@@ -48,3 +47,16 @@ class ResourceAccessor(ResourceAccessorInterface):
         res.status, res.data = accessResource(uri, input, self.from_java_conversion_func(params), method)
         res.data = self.to_java_conversion_func(res.data)
         return res
+
+    def makeResourceProxy(self, componentClassName, suggestedName, resourceDescription, params):
+        rd = { "resource_creation_params" : { "suggested_name" : suggestedName, "desc" : resourceDescription },
+               "params" : self.from_java_conversion_func(params) }
+        res = makeResource(componentClassName, rd)
+        ret = MakeResourceResult()
+        ret.status = res['status']
+        ret.name   = res['name']
+        ret.uri    = res['uri']
+        return ret
+
+
+        
