@@ -34,6 +34,7 @@ from org.mulesoft.restx.util import RawFileReader
 from java.io import File
 from java.io import FileInputStream
 from java.nio import ByteBuffer
+from java.lang import Exception as JavaException
 
 
         
@@ -95,6 +96,6 @@ class StaticBrowser(BaseBrowser):
                 if ext in [ "jpg", "png", "gif", "jpeg" ]:
                     res.addHeader("Content-type", "image/%s" % ext)
             return res
-        except Exception, e:
+        except (Exception, JavaException), e:
             return Result.notFound("Not found")
             
