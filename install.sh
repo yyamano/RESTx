@@ -154,6 +154,12 @@ JAVA_EXECUTABLE=$EXEC_PATH
 echo 'JAVA_EXECUTABLE='$JAVA_EXECUTABLE >> $ENVIRON_TMP_FILE
 
 #
+# Setting the $RESTX_HOME variable
+#
+RESTX_HOME="`pwd`"
+echo 'RESTX_HOME='$RESTX_HOME >> $ENVIRON_TMP_FILE
+
+#
 # Testing for javac. Fail quietly, since not having JAVAC is permissible,
 # it just doesn't allow us to compile Java components.
 #
@@ -352,12 +358,6 @@ if [ $? == 1 ]; then
 fi
 
 echo "Ok. Jython found 'simplejson'."
-
-#
-# Setting the $RESTX_HOME variable
-#
-RESTX_HOME="`pwd`"
-echo 'RESTX_HOME='$RESTX_HOME >> $ENVIRON_TMP_FILE
 
 #
 # Adding jython to our classpath
