@@ -18,6 +18,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
 
+#
+# Run this one with Jython
+#
 
 import sys
 import restxjson as json
@@ -32,6 +35,12 @@ from restx.core.parameter import *
 import snap_http_lib as http   # A decent URL library
 
 SERVER_URL = "http://localhost:8001"
+DOCROOT = ""
+#SERVER_URL = "http://localhost:8080/restx"
+#DOCROOT = "/restx"
+
+
+TEST_RESOURCES = []
 
 def _pretty_json(obj):
     """
@@ -53,6 +62,9 @@ def _get_data(relative_url):
     @rtype               tuple
 
     """
+    if DOCROOT:
+        if relative_url.startswith(DOCROOT):
+            relative_url = relative_url[len(DOCROOT):]
     if relative_url.startswith("/"):
         relative_url = relative_url[1:]
     resp = http.urlopen("GET", SERVER_URL + "/" + relative_url, headers={"Accept" : "application/json"})
@@ -79,6 +91,9 @@ def _send_data(relative_url, obj):
     @rtype               tuple
 
     """
+    if DOCROOT:
+        if relative_url.startswith(DOCROOT):
+            relative_url = relative_url[len(DOCROOT):]
     if relative_url.startswith("/"):
         relative_url = relative_url[1:]
     resp = http.urlopen("POST", SERVER_URL + "/" + relative_url, headers={"Accept" : "application/json"}, data=json.dumps(obj))
@@ -103,6 +118,9 @@ def _delete(relative_url):
     @rtype               tuple
 
     """
+    if DOCROOT:
+        if relative_url.startswith(DOCROOT):
+            relative_url = relative_url[len(DOCROOT):]
     if relative_url.startswith("/"):
         relative_url = relative_url[1:]
     resp = http.urlopen("DELETE", SERVER_URL + "/" + relative_url)
@@ -139,12 +157,12 @@ def test_10_home():
     assert(resp.getStatus() == 200)
 
     should = {
-                    "code"     : "/code",
-                    "resource" : "/resource",
-                    "doc"      : "/meta/doc",
-                    "static"   : "/static",
-                    "name"     : "MuleSoft RESTx server prototype",
-                    "version"  : "(prototype)"
+                    "code"     : DOCROOT + "/code",
+                    "resource" : DOCROOT + "/resource",
+                    "doc"      : DOCROOT + "/meta/doc",
+                    "static"   : DOCROOT + "/static",
+                    "name"     : "MuleSoft RESTx server",
+                    "version"  : "0.9"
              }
     allkeys = [ 'code', 'resource', 'doc', 'static', 'name', 'version' ]
 
@@ -174,7 +192,7 @@ def test_18_meta_doc():
     """
     data, resp = _get_data("/meta/doc")
     assert(resp.getStatus() == 200)
-    assert("documentation for the server" in data)
+    assert("Welcome to RESTx!" in data)
 
 
 def test_30_code():
@@ -212,9 +230,9 @@ def test_40_twitter_code():
         assert(name in cdef)
     assert(len(expected_keys) == len(cdef))
     assert(cdef['name'] == "TwitterComponent")
-    assert(cdef['uri']  == "/code/TwitterComponent")
+    assert(cdef['uri']  == DOCROOT + "/code/TwitterComponent")
     assert(cdef['desc'] == "Provides access to a Twitter account.")
-    assert(cdef['doc']  == "/code/TwitterComponent/doc")
+    assert(cdef['doc']  == DOCROOT + "/code/TwitterComponent/doc")
 
     params_def = {
         "account_name": {
@@ -253,11 +271,11 @@ def test_40_twitter_code():
     services_def = {
         "status": {
             "desc": "You can GET the status or POST a new status to it.", 
-            "uri": "/code/TwitterComponent/status"
+            "uri": DOCROOT + "/code/TwitterComponent/status"
         }, 
         "timeline": {
             "desc": "You can GET the timeline of the user.", 
-            "uri": "/code/TwitterComponent/timeline"
+            "uri": DOCROOT + "/code/TwitterComponent/timeline"
         }
     } 
 
@@ -286,35 +304,35 @@ def test_50_make_resource():
     d = {
             "foo"                   : { "blah" : 123 },
         }
-    data, resp = _send_data("/code/TwitterComponent", d)
+    data, resp = _send_data(DOCROOT + "/code/TwitterComponent", d)
     assert(resp.getStatus() == 400)
     assert("Malformed resource parameter definition. Unknown key: foo" in data)
 
     d = {
             "params"                   : { "account_password" : "Foo", "account_name" : "Bar" },
         }
-    data, resp = _send_data("/code/TwitterComponent", d)
+    data, resp = _send_data(DOCROOT + "/code/TwitterComponent", d)
     assert(resp.getStatus() == 400)
     assert("Missing mandatory parameter 'suggested_name' in section 'resource_creation_params'" in data)
 
     d = {
             "params"                   : { "account_password" : "Foo" },
         }
-    data, resp = _send_data("/code/TwitterComponent", d)
+    data, resp = _send_data(DOCROOT + "/code/TwitterComponent", d)
     assert(resp.getStatus() == 400)
     assert("Missing mandatory parameter 'account_name' in section 'params'" in data)
 
     d = {
             "params"                   : { "account_password" : 123 },
         }
-    data, resp = _send_data("/code/TwitterComponent", d)
+    data, resp = _send_data(DOCROOT + "/code/TwitterComponent", d)
     assert(resp.getStatus() == 400)
     assert("Incompatible type for parameter 'account_password' in section 'params'" in data)
 
     d = {
             "params"                   : { "blah" : 123 },
         }
-    data, resp = _send_data("/code/TwitterComponent", d)
+    data, resp = _send_data(DOCROOT + "/code/TwitterComponent", d)
     assert(resp.getStatus() == 400)
     assert("Unknown parameter in 'params' section: blah" in data)
 
@@ -322,7 +340,7 @@ def test_50_make_resource():
             "params"                   : { "account_password" : "Foo", "account_name" : "Bar" },
             "resource_creation_params" : { "suggested_name" : "foobar", "blah" : 123 }
         }
-    data, resp = _send_data("/code/TwitterComponent", d)
+    data, resp = _send_data(DOCROOT + "/code/TwitterComponent", d)
     assert("Unknown parameter in 'resource_creation_params' section: blah" in data)
     assert(resp.getStatus() == 400)
 
@@ -330,11 +348,12 @@ def test_50_make_resource():
             "params"                   : { "account_password" : "Foo", "account_name" : "Bar" },
             "resource_creation_params" : { "suggested_name" : "_test_foobar", "desc" : "A foobar resource" }
         }
-    data, resp = _send_data("/code/TwitterComponent", d)
+    TEST_RESOURCES.append("_test_foobar")
+    data, resp = _send_data(DOCROOT + "/code/TwitterComponent", d)
     assert(resp.getStatus() == 201)
     assert(data['status']   == "created")
     assert(data['name']     == "_test_foobar")
-    assert(data['uri']      == "/resource/_test_foobar")
+    assert(data['uri']      == DOCROOT + "/resource/_test_foobar")
     assert(len(data)        == 3)
 
 def test_60_examine_resource():
@@ -348,15 +367,15 @@ def test_60_examine_resource():
     resource_def = {
         "services": {
             "status": {
-                "uri": "/resource/_test_foobar/status", 
+                "uri": DOCROOT + "/resource/_test_foobar/status", 
                 "desc": "You can GET the status or POST a new status to it."
             }, 
             "timeline": {
-                "uri": "/resource/_test_foobar/timeline", 
+                "uri": DOCROOT + "/resource/_test_foobar/timeline", 
                 "desc": "You can GET the timeline of the user."
             }
         }, 
-        "uri": "/resource/_test_foobar", 
+        "uri": DOCROOT + "/resource/_test_foobar", 
         "name": "_test_foobar", 
         "desc": "A foobar resource"
     }
@@ -371,20 +390,21 @@ def test_70_positional_params():
     d = {
             "resource_creation_params" : { "suggested_name" : "_test_foobarstorage", "desc" : "A foobar storage resource" }
         }
-    data, resp = _send_data("/code/StorageComponent", d)
+    TEST_RESOURCES.append("_test_foobarstorage")
+    data, resp = _send_data(DOCROOT + "/code/StorageComponent", d)
     assert(resp.getStatus() == 201)
     assert(data['status']   == "created")
     assert(data['name']     == "_test_foobarstorage")
-    assert(data['uri']      == "/resource/_test_foobarstorage")
+    assert(data['uri']      == DOCROOT + "/resource/_test_foobarstorage")
     assert(len(data)        == 3)
 
-    # Confirm that there is nothing stored
+    # Delete anything that's there
     cdef, resp = _get_data("/resource/_test_foobarstorage/files")
     assert(resp.getStatus() == 200)
     assert(cdef == [])
 
     # Store a file
-    data, resp = _send_data("/resource/_test_foobarstorage/files/foo", "This is a buffer")
+    data, resp = _send_data(DOCROOT + "/resource/_test_foobarstorage/files/foo", "This is a buffer")
     assert(data == "Successfully stored")
     assert(resp.getStatus() == 200)
 
@@ -394,7 +414,7 @@ def test_70_positional_params():
     assert(resp.getStatus() == 200)
 
     # Delete the file again
-    buf, resp = _delete("/resource/_test_foobarstorage/files/foo")
+    buf, resp = _delete(DOCROOT + "/resource/_test_foobarstorage/files/foo")
     assert(resp.getStatus() == 200)
 
 def test_999_cleanup():
@@ -404,13 +424,15 @@ def test_999_cleanup():
     This is actually more of a cleanup function.
 
     """
+    """
     rlist, resp = _get_data('/resource')
     assert(resp.getStatus() == 200)
     # Find any old test resources and delete them.
     for name in rlist:
+    """
+    for name in TEST_RESOURCES:
         if name.startswith("_test_"):
-            info = rlist[name]
-            buf, resp = _delete(info['uri'])
+            buf, resp = _delete(DOCROOT + "/resource/" + name)
             assert(resp.getStatus() == 200)
 
 

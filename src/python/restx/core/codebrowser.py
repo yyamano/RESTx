@@ -114,7 +114,7 @@ class CodeBrowser(BaseBrowser):
 
         """
         # It's the responsibility of the browser class to provide breadcrumbs
-        self.breadcrumbs = [ ("Home", settings.DOCUMENT_ROOT), ("Code", settings.PREFIX_CODE) ]
+        self.breadcrumbs = [ ("Home", "/"), ("Code", settings.PREFIX_CODE) ]
 
         if self.request.getRequestPath() == settings.PREFIX_CODE:
             #
@@ -181,7 +181,12 @@ class CodeBrowser(BaseBrowser):
         except Exception, e:
             raise RestxException("Malformed request body: " + str(e))
         ret_msg = makeResourceFromClass(component_class, param_dict)
-        return Result.created(ret_msg['uri'], ret_msg)
+        # This is returned back to the client, so we should take the URI
+        # string and cast it to a Url() object. That way, the DOCUMENT_ROOT
+        # can be applied as needed before returning this to the client.
+        location = ret_msg['uri']
+        ret_msg['uri'] = Url(location)
+        return Result.created(location, ret_msg)
     
     def process(self):
         """

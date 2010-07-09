@@ -29,4 +29,5 @@ from restx.resources                  import makeResource
 
 from org.mulesoft.restx.exception     import *
 from org.mulesoft.restx.component.api import Result, HTTP, HttpMethod
+from org.mulesoft.restx.util          import Url
 

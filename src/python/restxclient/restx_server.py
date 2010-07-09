@@ -199,8 +199,10 @@ class RestxServer(object):
         parse_result = urlparse.urlparse(server_uri)
         if parse_result.scheme != "http":
             raise RestxClientException("Only 'http' schema is currently supported.")
-        if parse_result.path  or  parse_result.query:
-            raise RestxClientException("No path or query allowed in server URI.")
+        if parse_result.path:
+            self.__docroot = parse_result.path
+        else:
+            self.__docroot = ""
         if ":" in parse_result.netloc:
             self.__host, port_str = parse_result.netloc.split(":")
             self.__port = int(port_str)
@@ -211,7 +213,7 @@ class RestxServer(object):
         #
         # Get meta info from server and perform some sanity checking
         #
-        status, d = self._json_send(self.__META_URI, status=200)
+        status, d = self._json_send(self.__docroot + self.__META_URI, status=200)
 
         try:
             self.__component_uri = d[self.__CODE_URI_KEY]

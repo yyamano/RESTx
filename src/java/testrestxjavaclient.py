@@ -19,7 +19,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 from org.mulesoft.restx.clientapi import RestxServer
-server = RestxServer("http://localhost:8001")
+#server = RestxServer("http://localhost:8080/restx")   # For testing behind a proxy
+server = RestxServer("http://localhost:8001")         # For direct connection
+
+
 
 component = server.getComponent("TestComponent")
 print component.getAllServices()

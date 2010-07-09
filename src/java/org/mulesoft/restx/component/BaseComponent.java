@@ -35,6 +35,7 @@ import org.mulesoft.restx.Settings;
 import org.mulesoft.restx.component.api.*;
 import org.mulesoft.restx.exception.RestxException;
 import org.mulesoft.restx.parameter.*;
+import org.mulesoft.restx.util.Url;
 
 
 public abstract class BaseComponent
@@ -319,7 +320,7 @@ public abstract class BaseComponent
 
         HashMap<String, Object> d = new HashMap<String, Object>();
         
-        d.put("uri",      getCodeUri());
+        d.put("uri",      new Url(getCodeUri()));
         d.put("name",     getName());
         d.put("desc",     getDesc());
         d.put("doc",      getCodeUri() + "/doc");
@@ -402,7 +403,7 @@ public abstract class BaseComponent
             HashMap<String, Object> ret = new HashMap<String, Object>();
             for (String name: services.keySet()) {
                 HashMap<String, Object> thisService = (HashMap<String, Object>)services.get(name);
-                thisService.put("uri", baseUri + "/" + name);
+                thisService.put("uri", new Url(baseUri + "/" + name));
                 ret.put(name, thisService);
                 HashMap<String, Object> params = (HashMap<String, Object>)thisService.get("params");
                 if (params != null) {

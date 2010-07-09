@@ -193,13 +193,20 @@ class JythonJavaHttpRequest(RestxHttpRequest):
     def getRequestPath(self):
         """
         Return only the path component of the URI.
+
+        Strip off the DOCUMENT_ROOT, if that is set.
         
         @return:    The path component of the URI.
         @rtype:     string
         
         """
         if self.__native_req:
-            return self.__native_req.getRequestURI().getPath()
+            path = self.__native_req.getRequestURI().getPath()
+            if settings.DOCUMENT_ROOT != ""  and  path.startswith(settings.DOCUMENT_ROOT):
+                path = path[len(settings.DOCUMENT_ROOT):]
+                if not path:
+                    path = "/"
+            return path
         else:
             return None
     
@@ -408,7 +415,7 @@ class JythonJavaHttpServer(BaseHttpServer):
         """
         self.request_handler = request_handler
         self.__native_server = HttpServer.create(InetSocketAddress(port), 5)
-        self.__native_server.createContext(settings.DOCUMENT_ROOT, __HttpHandler(request_handler))
+        self.__native_server.createContext(settings.DOCUMENT_ROOT if settings.DOCUMENT_ROOT != "" else "/", __HttpHandler(request_handler))
         self.__native_server.setExecutor(Executors.newCachedThreadPool())
         self.__native_server.start()
         log("Listening for HTTP requests on port %d..." % port)

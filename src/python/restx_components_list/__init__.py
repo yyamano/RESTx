@@ -26,3 +26,4 @@ from restx.components.GpsWalkerComponent    import GpsWalkerComponent#Python
 from restx.components.StorageComponent      import StorageComponent#Python
 from org.mulesoft.restx.component         import JavaTwitterComponent#Java
 from org.mulesoft.restx.component         import TestComponent#Java
+from restx.components.WeatherScraper      import WeatherScraper#Python

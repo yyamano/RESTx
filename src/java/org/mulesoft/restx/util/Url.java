@@ -20,6 +20,8 @@
 
 package org.mulesoft.restx.util;
 
+import org.mulesoft.restx.Settings;
+
 public class Url
 {
     private String urlStr;
@@ -32,9 +34,20 @@ public class Url
     
     public Url(String urlStr, String displayStr)
     {
-        this.urlStr     = urlStr;
+        // URIs that are within our server (starting with '/')
+        // are prepended with the document root. That way, the
+        // doc-root does not need to be referred to anywhere
+        // else in the code, only in those places where we
+        // render URIs.
+        if (urlStr.charAt(0) == '/') {
+            this.urlStr = Settings.DOCUMENT_ROOT + urlStr;
+        }
+        else {
+            this.urlStr = urlStr;
+        }
+            
         if (displayStr == null) {
-            this.displayStr = urlStr;
+            this.displayStr = this.urlStr;
         }
         else {
             this.displayStr = displayStr;
@@ -45,7 +58,7 @@ public class Url
     {
         return urlStr;
     }
-    
+
     public String as_html()
     {
         return "<a href=\"" + urlStr + "\">" + displayStr + "</a>";

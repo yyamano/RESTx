@@ -29,6 +29,7 @@ import traceback
 # RESTx imports
 import restx.settings as settings
 
+from org.mulesoft.restx.util            import Url
 from org.mulesoft.restx.exception       import *
 from org.mulesoft.restx.component.api   import HTTP, HttpMethod, Result
 
@@ -107,7 +108,7 @@ class ResourceBrowser(BaseBrowser):
 
         if method == HTTP.GET_METHOD:
             # It's the responsibility of the browser class to provide breadcrumbs
-            self.breadcrumbs = [ ("Home", settings.DOCUMENT_ROOT), ("Resource", settings.PREFIX_RESOURCE) ]
+            self.breadcrumbs = [ ("Home", "/"), ("Resource", settings.PREFIX_RESOURCE) ]
 
         if self.request.getRequestPath() == settings.PREFIX_RESOURCE:
             #
@@ -151,6 +152,7 @@ class ResourceBrowser(BaseBrowser):
             code_uri              = rinfo['code_uri']
             component             = rinfo['component']
             services              = public_resource_def['services']
+            public_resource_def['uri'] = Url(public_resource_def['uri'])
 
             if method == HTTP.GET_METHOD:
                 self.breadcrumbs.append((resource_name, resource_home_uri))
@@ -194,4 +196,3 @@ class ResourceBrowser(BaseBrowser):
                 if method == HTTP.POST_METHOD:
                     raise RestxMethodNotAllowedException()
                 return Result.ok(public_resource_def)
-        print "@=============================================="

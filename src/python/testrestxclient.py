@@ -21,7 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import restxclient.api as restxapi
 
-server    = restxapi.RestxServer("http://localhost:8001")
+#server    = restxapi.RestxServer("http://localhost:8080/restx")   # For testing behind proxy
+server    = restxapi.RestxServer("http://localhost:8001")         # For direct connection
 component = server.get_component ("TestComponent")
 print component.get_all_services()
 

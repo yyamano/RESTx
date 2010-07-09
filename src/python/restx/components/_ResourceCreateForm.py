@@ -68,7 +68,7 @@ The user submits the filled-out form and a new resource is created.
         Sends client back to form page with error message.
 
         """
-        return Result.temporaryRedirect("%s/form/%s?message=%s" % (self.getMyResourceUri(), component_name, message))
+        return Result.temporaryRedirect("%s%s/form/%s?message=%s" % (settings.DOCUMENT_ROOT, self.getMyResourceUri(), component_name, message))
 
     def create(self, method, input, component_name):
         """
@@ -167,7 +167,7 @@ Please enter the resource configuration...<br><p>
         %s
         <tr><td colspan=2 align=center><input type="submit" value="Submit" /></tr></tr>
     </table>
-</form>""" % (comp.getName(), comp.getDesc(), msg, "%s/create/%s" % (self.getMyResourceUri(), component_name), param_fields_html)
+</form>""" % (comp.getName(), comp.getDesc(), msg, "%s%s/create/%s" % (settings.DOCUMENT_ROOT, self.getMyResourceUri(), component_name), param_fields_html)
 
         footer = settings.HTML_FOOTER
 

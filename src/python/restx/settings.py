@@ -23,7 +23,8 @@ Settings for RESTx.
 
 """
 
-DOCUMENT_ROOT   = "/"
+DOCUMENT_ROOT   = ""                # If run standalone, this is a good choice
+#DOCUMENT_ROOT   = "/restx"          # The proxy path if run behind a proxy
 PREFIX_META     = "/meta"
 PREFIX_CODE     = "/code"
 PREFIX_RESOURCE = "/resource"
@@ -145,14 +146,14 @@ HTML_HEADER = """
 
     </head>
     <body>
-        <a target="_blank" href="http://restx.mulesoft.org"><img border=0 style="padding-right:10px" width="97" height="30" src="/static/restx/images/restx_logo.png" alt="RESTx" /></a>
+        <a target="_blank" href="http://restx.mulesoft.org"><img border=0 style="padding-right:10px" width="97" height="30" src="%s/static/restx/images/restx_logo.png" alt="RESTx" /></a>
         <i>The fastest and easiest way to create RESTful resources</i>
         <hr>
-"""
+""" % DOCUMENT_ROOT
 
 HTML_FOOTER = """
 <hr>
-<center><a border=0 target="_blank" href="http://mulesoft.com"><img border=0 src="/static/restx/images/logo-mule-s.png" alt="MuleSoft" /></a></center>
+<center><a border=0 target="_blank" href="http://mulesoft.com"><img border=0 src="%s/static/restx/images/logo-mule-s.png" alt="MuleSoft" /></a></center>
 </body>
 </html>
-"""
+""" % DOCUMENT_ROOT

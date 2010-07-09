@@ -44,6 +44,9 @@ class CombinerComponent(BaseComponent):
     SERVICES         = {
                            "combine" :   {
                                "desc"   : "Combines stuff"
+                           },
+                           "combined_results" :   {
+                               "desc"   : "Combines stuff"
                            }
                        }
     
@@ -95,4 +98,24 @@ class CombinerComponent(BaseComponent):
         else:
             result = Result(code, "Looks like there was a problem: " + str(data))
         return result
+
+
+
+    def combined_results(self, method, input):
+        return Result.ok("foo")
+        code, pr_contacts    = accessResource("/resource/PR_contacts/for_websites")
+        code, search_results = accessResource("/resource/AboutUs/search", params={"num":"50"})
+
+        result = list()
+        for res in search_results:
+            if res['visibleUrl'] in pr_contacts:
+                result.append({
+                     "url"         : res['url'],
+                     "content"     : res['content'],
+                     "pr_contacts" : {
+                        "site"    : res['visibleUrl'],
+                        "contact" : pr_contacts[res['visibleUrl']]
+                    }
+               })
+        return Result.ok(result)
 

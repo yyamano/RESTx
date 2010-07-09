@@ -59,6 +59,7 @@ public class Settings
     /*
      * Here finally we have the publicly exported symbols.
      */
+    public static String DOCUMENT_ROOT   = getFromPythonSettings("DOCUMENT_ROOT");
     public static String PREFIX_CODE     = getFromPythonSettings("PREFIX_CODE");
     public static String PREFIX_RESOURCE = getFromPythonSettings("PREFIX_RESOURCE");;
 }

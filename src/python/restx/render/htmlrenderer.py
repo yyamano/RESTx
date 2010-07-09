@@ -32,7 +32,7 @@ import restx.settings as settings
 from restx.render.baserenderer import BaseRenderer
 from restx.core.util           import bool_view
 
-from org.mulesoft.restx.util import Url
+from org.mulesoft.restx.util   import Url
 
 class HtmlRenderer(BaseRenderer):
     """
@@ -78,7 +78,7 @@ class HtmlRenderer(BaseRenderer):
         self.header = settings.HTML_HEADER + \
                       '%s<br><hr>' % (self.__render_breadcrumbs(self.breadcrumbs))
         if context_header:
-            self.header += ' &nbsp; '.join(['<a %s href="%s">%s</a><br>' % (options, uri, name) for (name, uri, options) in context_header ])
+            self.header += ' &nbsp; '.join(['<a %s href="%s%s">%s</a><br>' % (options, settings.DOCUMENT_ROOT, uri, name) for (name, uri, options) in context_header ])
             self.header += "<br>"
                       
                       
@@ -102,7 +102,7 @@ class HtmlRenderer(BaseRenderer):
             name, uri = elem
             if i < len(breadcrumbs)-1:
                 # All but the last element are rendered as clickable links
-                segments.append('<a href="%s">%s</a>' % (uri, name))
+                segments.append('<a href="%s%s">%s</a>' % (settings.DOCUMENT_ROOT, uri, name))
             else:
                 segments.append(name)
         return " > ".join(segments)            

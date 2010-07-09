@@ -65,6 +65,7 @@ public class RestxServer
     protected String                         serverUri;
     protected String                         componentUri;
     protected String                         docUri;
+    protected String                         docRoot;
     protected String                         name;
     protected String                         resourceUri;
     protected String                         staticUri;
@@ -198,7 +199,7 @@ public class RestxServer
                 if (status != null) {
                     if (status != code) {
                         throw new RestxClientException("Status code " + status + " was expected for request to '" +
-                                                     fullUrl + "'. Instead we received " + code);
+                                                       fullUrl + "'. Instead we received " + code);
                     }
                 }
                 return new HttpResult(code, msg);
@@ -493,12 +494,17 @@ public class RestxServer
 
         URL url = new URL(serverUri);
 
-        // Some sanity checking on the URI. We are still a bit
-        // limited in what we accept. The path has to be either empty
-        // or just contain '/' and no query portion is allowed in
-        // the URL.
-        if (!(url.getPath().isEmpty() || url.getPath().equals("/")) || url.getQuery() != null) {
-            throw new RestxClientException("No path or query allowed in server URI.");
+        // Some sanity checking on the URI.
+        this.serverUri = url.getProtocol() + "://" + url.getHost();
+        if (url.getPort() > -1) {
+            this.serverUri += ":" + Integer.toString(url.getPort());
+        }
+
+        if (!url.getPath().isEmpty()) {
+            docRoot = url.getPath();
+        }
+        else {
+            docRoot = "";
         }
 
         if (!url.getProtocol().equals("http")) {
@@ -506,7 +512,7 @@ public class RestxServer
         }
 
         // Receive server meta data
-        HttpResult              res = jsonSend(META_URI, null, HttpMethod.GET, 200, null);
+        HttpResult              res = jsonSend(docRoot + META_URI, null, HttpMethod.GET, 200, null);
         HashMap<String, String> hm  = (HashMap<String, String>)res.data;
 
         // Sanity check on received information

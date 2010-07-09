@@ -324,7 +324,7 @@ class BaseComponent(object):
                             # in this dictionary here, so we don't need to convert
                             # anything.
                             ret[name]['params'][pname] = ret[name]['params'][pname].as_dict()
-                ret[name]['uri'] = base_uri + "/" + name
+                ret[name]['uri'] = Url(base_uri + "/" + name)
             return ret
             #return dict([(name, dict(uri=base_uri + "/" + name, desc=self.SERVICES[name])) for name in self.SERVICES.keys() ])
         else:

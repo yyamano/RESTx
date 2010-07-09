@@ -83,7 +83,7 @@ class StorageComponent(BaseComponent):
             # We want to prepend the resource name and service name, so that the user
             # gets complete URIs for each file
             my_resource_uri = self.getMyResourceUri()
-            new_data = [ "%s/%s/%s" % (my_resource_uri, "files", dname) for dname in data ]
+            new_data = [ Url("%s/%s/%s" % (my_resource_uri, "files", dname)) for dname in data ]
             data = new_data
         else:
             if method == HTTP.DELETE:

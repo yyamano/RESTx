@@ -32,22 +32,22 @@ import java.util.HashMap;
 public class RestxComponent
 {
     // The well-known URIs where we can find specific server information
-    protected static final String            NAME_KEY               = "name";
-    protected static final String            DESC_KEY               = "desc";
-    protected static final String            DOC_KEY                = "doc";
-    protected static final String            URI_KEY                = "uri";
-    protected static final String            PARAMS_KEY             = "params";
-    protected static final String            RCP_KEY                = "resource_creation_params";
-    protected static final String            RCP_DESC_KEY           = "desc";
-    protected static final String            RCP_SUGGESTED_NAME_KEY = "suggested_name";
-    protected static final String            SERVICES_KEY           = "services";
+    protected static final String              NAME_KEY               = "name";
+    protected static final String              DESC_KEY               = "desc";
+    protected static final String              DOC_KEY                = "doc";
+    protected static final String              URI_KEY                = "uri";
+    protected static final String              PARAMS_KEY             = "params";
+    protected static final String              RCP_KEY                = "resource_creation_params";
+    protected static final String              RCP_DESC_KEY           = "desc";
+    protected static final String              RCP_SUGGESTED_NAME_KEY = "suggested_name";
+    protected static final String              SERVICES_KEY           = "services";
     
     protected RestxServer                      server;
-    protected String                         name;
-    protected String                         description;
-    protected String                         docUri;
-    protected String                         doc;
-    protected String                         uri;
+    protected String                           name;
+    protected String                           description;
+    protected String                           docUri;
+    protected String                           doc;
+    protected String                           uri;
     protected HashMap<String, RestxParameter>  parameters;
     protected RestxParameter                   rcpDescriptionParam;
     protected RestxParameter                   rcpSuggestedNameParam;
