@@ -61,9 +61,9 @@ class SampleComponent(BaseComponent):
     SERVICES         = {
                            # Key into the dictionary is the service name. Has to be an
                            # exact function name.
-                           "foobar" : {
+                           "some_subresource" : {
                                # A human readable, brief description of the service.
-                               "desc" : "This is the foobar service",
+                               "desc" : "This is the XYZ subresource",
                                # Definition of all parameters that this service accepts and which
                                # therefore are exposed on the URI command line. Can be skipped if
                                # the service does not take parameters.
@@ -84,11 +84,11 @@ class SampleComponent(BaseComponent):
                        }
         
 
-    def foobar(self,
+    def some_subresource(self,
                method, input,    # These two parameters always need to be present
                text, num):       # These are the additional parameters for this service, specified above
         """
-        The foobar service method.
+        The method that provides the XYZ subresource.
         
         @param method:     The HTTP request method.
         @type method:      string

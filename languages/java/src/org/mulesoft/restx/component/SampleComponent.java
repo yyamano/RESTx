@@ -59,21 +59,21 @@ public class SampleComponent extends BaseComponent
     // ---------------
     // Service methods
     // ---------------
-    @Service(description = "This is the foobar service")
-    public Result foobar(HttpMethod method, String input,     // These two parameters are always present
+    @Service(description = "This is the XYZ subresource service")
+    public Result someSubresource(HttpMethod method, String input,     // These two parameters are always present
                          
-                         // Here now the parameters that are exposed on the URI command line
+                                  // Here now the parameters that are exposed on the URI command line
 
-                         // The following defines a non-positional, mandatory parameter
-                         @Parameter(name="text", desc="This is a text parameter")
-                         String     text,
-                         
-                         // This defines an optional, positional parameter. Note that positional
-                         // parameters may either be set with query-type arguments on the URI
-                         // command line, or as path elements in the URI.
-                         @Parameter(name="num", desc="A numeric parameter", positional=true)
-                         @Default("10")
-                         BigDecimal num)
+                                  // The following defines a non-positional, mandatory parameter
+                                  @Parameter(name="text", desc="This is a text parameter")
+                                  String     text,
+                                 
+                                  // This defines an optional, positional parameter. Note that positional
+                                  // parameters may either be set with query-type arguments on the URI
+                                  // command line, or as path elements in the URI.
+                                  @Parameter(name="num", desc="A numeric parameter", positional=true)
+                                  @Default("10")
+                                  BigDecimal num)
     {
         // -------------------------------------------------
         // Any kind of processing may take place here.
