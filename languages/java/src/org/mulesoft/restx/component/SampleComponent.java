@@ -96,6 +96,11 @@ public class SampleComponent extends BaseComponent
         //
         // Accessing other resources:
         //     accessResource()
+        //     makeResource()
+        //
+        // Processing JSON:
+        //     fromJson()
+        //     toJson()
 
         // -------------------------------------------------------------------------
         // Preparing return data:

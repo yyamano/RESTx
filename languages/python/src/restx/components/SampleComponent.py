@@ -133,8 +133,13 @@ class SampleComponent(BaseComponent):
         # Storage:
         #     self.getFileStorage() (providing: loadFile(), storeFile(), deleteFile(), listFiles())
         #
-        # Accessing other resources:
+        # Accessing / creating other resources:
         #     accessResource()
+        #     makeResource()
+        #
+        # Processing JSON:
+        #     self.fromJson()
+        #     self.toJson()
 
         # -------------------------------------------------------------------------
         # Preparing return data:
