@@ -225,7 +225,7 @@ class HtmlRenderer(BaseRenderer):
         @param data:        An object containing the data to be rendered.
         @param data:        object
         
-        @param top_level:   Flag indicating whether this we are at the
+        @param top_level:   Flag indicating whether we are at the
                             top level for output (this function is called
                             recursively and therefore may not always find
                             itself at the top level). This is important for
@@ -247,5 +247,5 @@ class HtmlRenderer(BaseRenderer):
         else:
             out += self.__plain_render(data)
         if top_level:
-            out = "%s%s%s" % (self.header, out, settings.HTML_FOOTER)
+            out = "%s%s%s" % (self.header, unicode(out, encoding="utf_8"), settings.HTML_FOOTER)
         return out

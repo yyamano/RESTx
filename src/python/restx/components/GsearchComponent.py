@@ -24,7 +24,6 @@ A test component.
 """
 # Python imports
 import urllib
-import restxjson as json
 import urllib
 
 # RESTx imports
@@ -91,7 +90,7 @@ class GsearchComponent(BaseComponent):
             code, data_str = self.httpGet(url)
             if code == HTTP.OK:
                 try:
-                    data      = json.loads(data_str)
+                    data      = self.fromJson(data_str)
                     new_batch = data['responseData']['results']
                     results  += new_batch
                 except Exception, e:

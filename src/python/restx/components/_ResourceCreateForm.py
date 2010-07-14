@@ -131,7 +131,10 @@ The user submits the filled-out form and a new resource is created.
         params.update(comp.getParams())  # In case this is a Java component, we get a Python dict this way
         param_fields_html = ""
         if params:
-            for pname, pdef in params.items():
+            param_field_names = params.keys()
+            param_field_names.sort()
+            for pname in param_field_names:
+                pdef = params[pname]
                 if not pdef.required:
                     opt_str = "<br>optional, default: %s" % pdef.getDefaultVal()
                 else:

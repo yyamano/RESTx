@@ -24,7 +24,6 @@ A storage component.
 """
 # Python imports
 import urllib
-import restxjson as json
 
 # RESTx imports
 from restx.components.api import *

@@ -22,6 +22,8 @@ package org.mulesoft.restx.component;
 
 import java.util.Map;
 
+import org.mulesoft.restx.exception.RestxException;
+import org.mulesoft.restx.util.JsonProcessor;
 import org.mulesoft.restx.component.api.FileStore;
 import org.mulesoft.restx.component.api.HttpResult;
 
@@ -33,7 +35,7 @@ public abstract class BaseComponentCapabilities
     {
         return getFileStorage("");
     }
-        
+
     // HTTP accesses
     public abstract void       httpSetCredentials(String accountName, String password);
     public abstract HttpResult httpGet(String url);
@@ -41,5 +43,4 @@ public abstract class BaseComponentCapabilities
     public abstract HttpResult httpPost(String url, String data);
     public abstract HttpResult httpPost(String url, String data, Map<String, String> headers);
 }
-
 

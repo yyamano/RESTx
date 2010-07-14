@@ -29,6 +29,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.math.BigDecimal;
 
+import org.json.JSONException;
+
 import org.mulesoft.restx.RestxHttpRequest;
 import org.mulesoft.restx.ResourceAccessorInterface;
 import org.mulesoft.restx.Settings;
@@ -36,6 +38,7 @@ import org.mulesoft.restx.component.api.*;
 import org.mulesoft.restx.exception.RestxException;
 import org.mulesoft.restx.parameter.*;
 import org.mulesoft.restx.util.Url;
+import org.mulesoft.restx.util.JsonProcessor;
 
 
 public abstract class BaseComponent
@@ -303,6 +306,27 @@ public abstract class BaseComponent
     public HttpResult httpPost(String url, String data, Map<String, String> headers)
     {
         return baseCapabilities.httpPost(url, data, headers);
+    }
+
+    // JSON processing
+    public Object fromJsonStr(String str) throws RestxException
+    {
+        try {
+            return JsonProcessor.loads(str);
+        }
+        catch (JSONException e) {
+            throw new RestxException("Could not de-serialize data: " + e.getMessage());
+        }
+    }
+
+    public String toJsonStr(Object obj) throws RestxException
+    {
+        try {
+            return JsonProcessor.dumps(obj);
+        }
+        catch (JSONException e) {
+            throw new RestxException("Could not serialize data: " + e.getMessage());
+        }
     }
     
     private HashMap<String, Object> changeParamsToPlainDict(Map<String, ParameterDef> paramDict)

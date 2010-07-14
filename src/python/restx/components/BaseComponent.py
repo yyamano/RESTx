@@ -29,10 +29,12 @@ from copy import deepcopy
 #RESTx imports
 import restx.settings as settings
 
+from restx.languages                       import __javaStructToPython
 from restx.core.parameter                  import *
 from restx.storageabstraction.file_storage import FileStorage
 
-from org.mulesoft.restx.util import Url
+from org.json                import JSONException
+from org.mulesoft.restx.util import Url, JsonProcessor
 
 #
 # Utility method.
@@ -138,6 +140,19 @@ class BaseComponent(object):
 
         """
         return self.__base_capabilities.getFileStorage(namespace)
+
+    def fromJson(self, str):
+        try:
+            obj = JsonProcessor.loads(str)
+        except JSONException, e:
+            raise RestxException("Could not de-serialize data: " + e.getMessage());
+        return __javaStructToPython(obj)
+
+    def toJson(self, obj):
+        try:
+            return JsonProcessor.dumps(obj)
+        except JSONException, e:
+            raise RestxException("Could not serialize data: " + e.getMessage());
     
     def httpSetCredentials(self, accountname, password):
         """

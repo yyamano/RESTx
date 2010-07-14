@@ -32,6 +32,7 @@ from restx.storageabstraction.file_storage import FileStorage
 from org.mulesoft.restx.component        import BaseComponentCapabilities
 from org.mulesoft.restx.component.api    import HttpResult, HTTP
 
+
 class BaseCapabilities(BaseComponentCapabilities):
     """
     This implements some of the base capabilities, which the framework

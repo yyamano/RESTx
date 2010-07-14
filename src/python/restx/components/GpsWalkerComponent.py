@@ -26,7 +26,6 @@ A test component.
 import math
 import random
 import urllib
-import restxjson as json
 
 # RESTx imports
 from restx.components.api import *
