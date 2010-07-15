@@ -86,7 +86,7 @@ class JsonRenderer(BaseRenderer):
     Class to render data as JSON.
         
     """
-    CONTENT_TYPE = "application/json"
+    CONTENT_TYPE = "application/json; charset=UTF-8"
 
     def render(self, data, top_level=False):
         """
@@ -122,9 +122,9 @@ class JsonRenderer(BaseRenderer):
             # manual fixup of the object, replacing all occurrances
             # of unusual types with their string representations.
             data = _recursive_type_fixer(data)
-            out = json.dumps(data, sort_keys=True, indent=4)
+            out = json.dumps(data, ensure_ascii=False, sort_keys=True, indent=4)
         else:
-            out = json.dumps(data, default=_default, sort_keys=True, indent=4)
+            out = json.dumps(data, ensure_ascii=False, default=_default, sort_keys=True, indent=4)
 
         return out
 

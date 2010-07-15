@@ -31,6 +31,8 @@ else:
     from simplejson import *
 
 class RestxJsonEncoder(JSONEncoder):
+    def __init__(self):
+        JSONEncoder.__init__(self, ensure_ascii=False)
     def default(self, obj):
         if isinstance(obj, datetime.datetime)  or isinstance(obj, datetime.date):
             return str(obj)

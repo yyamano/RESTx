@@ -175,7 +175,7 @@ Please enter the resource configuration...<br><p>
         footer = settings.HTML_FOOTER
 
         res = Result.ok(header + body + footer)
-        res.addHeader("Content-type", "text/html")
+        res.addHeader("Content-type", "text/html; charset=UTF-8")
 
         return res
 

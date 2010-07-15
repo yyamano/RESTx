@@ -287,7 +287,14 @@ class JythonJavaHttpRequest(RestxHttpRequest):
         """
         if self.__native_req:
             os = self.__native_req.getResponseBody()
-            os.write(self.__response_body, 0, len(self.__response_body))
+            if type(self.__response_body) is str or type(self.__response_body) is unicode:
+                if self.__response_headers.has_key('Content-type'):
+                    (ct, enc) = self.__response_headers['Content-type'].split("charset=")
+                else:
+                    enc = "US-ASCII"
+                os.write(self.__response_body.encode(enc), 0, len(self.__response_body))
+            else:
+                os.write(self.__response_body, 0, len(self.__response_body))
             os.flush()
             os.close()
         

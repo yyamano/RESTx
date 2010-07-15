@@ -46,7 +46,7 @@ class HtmlRenderer(BaseRenderer):
         * no_border (no table and cell borders)
     
     """
-    CONTENT_TYPE = "text/html"
+    CONTENT_TYPE = "text/html; charset=UTF-8"
 
     def __init__(self, renderer_args, breadcrumbs, context_header=None):
         """
@@ -177,13 +177,13 @@ class HtmlRenderer(BaseRenderer):
         @rtype:         string
 
         """
-        if type(data) is unicode  or  type(data) is str:
+        #if type(data) is unicode  or  type(data) is str:
             # WSGI wants str(), but some unicode characters can cause exceptions.
             # I'm sure there are better ways to do this, but that works for now.
             # When we use Jython then we can get unprintable characters even
             # in str (while later string operations may fail, which is totally
             # odd...)
-            data = ''.join([ (str(x) if x in string.printable else "") for x in data ])
+            # data = ''.join([ (str(x) if x in string.printable else "") for x in data ])
         # Note that when we use Jython we still have unicode (the conversion to str
         # doesn't seem to work). That's why in the following line we have to test
         # for str() as well as unicode(). The return in unicode is not a problem
