@@ -25,7 +25,8 @@
 JYTHON_DOWNLOAD_LOCATION="http://downloads.sourceforge.net/project/jython/jython/2.5.1/jython_installer-2.5.1.jar"
 JYTHON_DOWNLOAD_FILE="jython_installer.jar"
 DEFAULT_INSTALL_DIR="`pwd`/jython"
-ENVIRON_TMP_FILE="__restxstart_tmp"
+ENVIRON_TMP_FILE="__restxstart_tmp.$$"
+SCRIPT_COMBINER_TMP_FILE="__tmp_script_combiner.$$"
 CTL_SCRIPT_BODY="bin/frags/_ctl_frg"
 CTL_SCRIPT="restxctl"
 COMPILE_SCRIPT_BODY="bin/frags/_compile_frg"
@@ -35,6 +36,8 @@ RESTX_BIN_DIR="bin"
 PID_FILE="restx.pid"
 START_STOP_SCRIPT_NAME="restx_start_stop_daemon"
 JSON_JAR_DOWNLOAD_LOCATION="http://repo2.maven.org/maven2/org/json/json/20090211/json-20090211.jar"
+
+trap 'rm -f $ENVIRON_TMP_FILE $SCRIPT_COMBINER_TMP_FILE' EXIT SIGHUP SIGINT SIGQUIT SIGTERM
 
 # ---------------------------------------------
 # Helper functions
@@ -103,21 +106,21 @@ function download
 # Append two file ($1 head and $2 body), set execute flag on
 # the result and finally move into a designated location ($3).
 function script_combiner {
-    cat "$1" "$2" > __tmp_script_combiner
+    cat "$1" "$2" > $SCRIPT_COMBINER_TMP_FILE
     if [ $? == 1 ]; then
-        error_report "Cannot append '$2' to '$1' in location '__tmp_script_combiner'. Abort..."
+        error_report "Cannot append '$2' to '$1' in location ${SCRIPT_COMBINER_TMP_FILE}. Abort..."
         exit 1
     fi
 
-    chmod u+x __tmp_script_combiner
+    chmod u+x $SCRIPT_COMBINER_TMP_FILE
     if [ $? == 1 ]; then
-        error_report "Cannot give execute permissions to '__tmp_script_combiner'. Abort..."
+        error_report "Cannot give execute permissions to ${SCRIPT_COMBINER_TMP_FILE}. Abort..."
         exit 1
     fi
 
-    mv __tmp_script_combiner $3
+    mv $SCRIPT_COMBINER_TMP_FILE $3
     if [ $? == 1 ]; then
-        error_report "Cannot move '__tmp_script_combiner' to '$3'. Abort..."
+        error_report "Cannot move ${SCRIPT_COMBINER_TMP_FILE} to '$3'. Abort..."
         exit 1
     fi
 }
