@@ -120,12 +120,13 @@ fi
 #
 # Change the name in the file
 #
-sed -i s/$SAMPLE_COMPONENT_NAME/$name/ $newfile
+sed -i .orig s/$SAMPLE_COMPONENT_NAME/$name/ $newfile
 if [ $? == 1 ]; then
     echo "Failed to modify name new component template to $name"
     echo
     exit 1
 fi
+rm "$newfile".orig
 
 #
 # Add an import statement to the components-list Python file
